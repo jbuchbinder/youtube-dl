@@ -116,6 +116,7 @@ from .defense import DefenseGouvFrIE
 from .discovery import DiscoveryIE
 from .divxstage import DivxStageIE
 from .dropbox import DropboxIE
+from .eagleplatform import EaglePlatformIE
 from .ebaumsworld import EbaumsWorldIE
 from .echomsk import EchoMskIE
 from .ehow import EHowIE
@@ -174,6 +175,7 @@ from .gameone import (
 from .gamespot import GameSpotIE
 from .gamestar import GameStarIE
 from .gametrailers import GametrailersIE
+from .gazeta import GazetaIE
 from .gdcvault import GDCVaultIE
 from .generic import GenericIE
 from .giantbomb import GiantBombIE
@@ -355,6 +357,7 @@ from .orf import (
     ORFTVthekIE,
     ORFOE1IE,
     ORFFM4IE,
+    ORFIPTVIE,
 )
 from .parliamentliveuk import ParliamentLiveUKIE
 from .patreon import PatreonIE
@@ -362,9 +365,11 @@ from .pbs import PBSIE
 from .phoenix import PhoenixIE
 from .photobucket import PhotobucketIE
 from .planetaplay import PlanetaPlayIE
+from .pladform import PladformIE
 from .played import PlayedIE
 from .playfm import PlayFMIE
 from .playvid import PlayvidIE
+from .playwire import PlaywireIE
 from .podomatic import PodomaticIE
 from .pornhd import PornHdIE
 from .pornhub import (
