@@ -546,6 +546,7 @@ from .vgtv import VGTVIE
 from .vh1 import VH1IE
 from .vice import ViceIE
 from .viddler import ViddlerIE
+from .video2brain import Video2BrainIE
 from .videobam import VideoBamIE
 from .videodetective import VideoDetectiveIE
 from .videolecturesnet import VideoLecturesNetIE

@@ -437,6 +437,7 @@ class InfoExtractor(object):
             url_or_request, video_id, note, errnote, fatal=fatal)
         if xml_string is False:
             return xml_string
+        xml_string = xml_string.strip()
         if transform_source:
             xml_string = transform_source(xml_string)
         return xml.etree.ElementTree.fromstring(xml_string.encode('utf-8'))
