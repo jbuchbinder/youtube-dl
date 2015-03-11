@@ -461,6 +461,7 @@ from .sport5 import Sport5IE
 from .sportbox import SportBoxIE
 from .sportdeutschland import SportDeutschlandIE
 from .srmediathek import SRMediathekIE
+from .ssa import SSAIE
 from .stanfordoc import StanfordOpenClassroomIE
 from .steam import SteamIE
 from .streamcloud import StreamcloudIE
@@ -612,6 +613,11 @@ from .yahoo import (
     YahooSearchIE,
 )
 from .yam import YamIE
+from .yandexmusic import (
+    YandexMusicTrackIE,
+    YandexMusicAlbumIE,
+    YandexMusicPlaylistIE,
+)
 from .yesjapan import YesJapanIE
 from .ynet import YnetIE
 from .youjizz import YouJizzIE
