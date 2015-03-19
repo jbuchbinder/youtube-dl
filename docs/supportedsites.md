@@ -47,6 +47,7 @@
  - **Bandcamp**
  - **Bandcamp:album**
  - **bbc.co.uk**: BBC iPlayer
+ - **BeatportPro**
  - **Beeg**
  - **BehindKink**
  - **Bet**
@@ -111,6 +112,7 @@
  - **Discovery**
  - **divxstage**: DivxStage
  - **Dotsub**
+ - **DouyuTV**
  - **DRBonanza**
  - **Dropbox**
  - **DrTuber**
@@ -145,6 +147,7 @@
  - **Firstpost**
  - **Flickr**
  - **Folketinget**: Folketinget (ft.dk; Danish parliament)
+ - **FootyRoom**
  - **Foxgay**
  - **FoxNews**
  - **france2.fr:generation-quoi**
@@ -213,6 +216,7 @@
  - **jpopsuki.tv**
  - **Jukebox**
  - **Kaltura**
+ - **KanalPlay**: Kanal 5/9/11 Play
  - **Kankan**
  - **Karaoketv**
  - **keek**
@@ -339,6 +343,7 @@
  - **PornHubPlaylist**
  - **Pornotube**
  - **PornoXO**
+ - **PrimeShareTV**
  - **PromptFile**
  - **prosiebensat1**: ProSiebenSat.1 Digital
  - **Puls4**
@@ -364,6 +369,7 @@
  - **RTP**
  - **RTS**: RTS.ch
  - **rtve.es:alacarta**: RTVE a la carta
+ - **rtve.es:infantil**: RTVE infantil
  - **rtve.es:live**: RTVE.es live streams
  - **RUHD**
  - **rutube**: Rutube videos
@@ -414,6 +420,7 @@
  - **SportBox**
  - **SportDeutschland**
  - **SRMediathek**: Saarländischer Rundfunk
+ - **SSA**
  - **stanfordoc**: Stanford Open ClassRoom
  - **Steam**
  - **streamcloud.eu**
@@ -483,6 +490,7 @@
  - **Ubu**
  - **udemy**
  - **udemy:course**
+ - **Ultimedia**
  - **Unistra**
  - **Urort**: NRK P3 Urørt
  - **ustream**
@@ -510,6 +518,7 @@
  - **Vidzi**
  - **vier**
  - **vier:videos**
+ - **Viewster**
  - **viki**
  - **vimeo**
  - **vimeo:album**
@@ -556,6 +565,9 @@
  - **XXXYMovies**
  - **Yahoo**: Yahoo screen and movies
  - **Yam**
+ - **yandexmusic:album**: Яндекс.Музыка - Альбом
+ - **yandexmusic:playlist**: Яндекс.Музыка - Плейлист
+ - **yandexmusic:track**: Яндекс.Музыка - Трек
  - **YesJapan**
  - **Ynet**
  - **YouJizz**

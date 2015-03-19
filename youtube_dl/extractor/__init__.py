@@ -37,6 +37,7 @@ from .bandcamp import BandcampIE, BandcampAlbumIE
 from .bbccouk import BBCCoUkIE
 from .beeg import BeegIE
 from .behindkink import BehindKinkIE
+from .beatportpro import BeatportProIE
 from .bet import BetIE
 from .bild import BildIE
 from .bilibili import BiliBiliIE
@@ -106,6 +107,7 @@ from .dctp import DctpTvIE
 from .deezer import DeezerPlaylistIE
 from .dfb import DFBIE
 from .dotsub import DotsubIE
+from .douyutv import DouyuTVIE
 from .dreisat import DreiSatIE
 from .drbonanza import DRBonanzaIE
 from .drtuber import DrTuberIE
@@ -151,6 +153,7 @@ from .fktv import (
 )
 from .flickr import FlickrIE
 from .folketinget import FolketingetIE
+from .footyroom import FootyRoomIE
 from .fourtube import FourTubeIE
 from .foxgay import FoxgayIE
 from .foxnews import FoxNewsIE
@@ -230,6 +233,7 @@ from .jove import JoveIE
 from .jukebox import JukeboxIE
 from .jpopsukitv import JpopsukiIE
 from .kaltura import KalturaIE
+from .kanalplay import KanalPlayIE
 from .kankan import KankanIE
 from .karaoketv import KaraoketvIE
 from .keezmovies import KeezMoviesIE
@@ -378,6 +382,7 @@ from .pornhub import (
 )
 from .pornotube import PornotubeIE
 from .pornoxo import PornoXOIE
+from .primesharetv import PrimeShareTVIE
 from .promptfile import PromptFileIE
 from .prosiebensat1 import ProSiebenSat1IE
 from .puls4 import Puls4IE
@@ -403,7 +408,7 @@ from .rtlnow import RTLnowIE
 from .rtl2 import RTL2IE
 from .rtp import RTPIE
 from .rts import RTSIE
-from .rtve import RTVEALaCartaIE, RTVELiveIE
+from .rtve import RTVEALaCartaIE, RTVELiveIE, RTVEInfantilIE
 from .ruhd import RUHDIE
 from .rutube import (
     RutubeIE,
@@ -534,6 +539,7 @@ from .udemy import (
     UdemyIE,
     UdemyCourseIE
 )
+from .ultimedia import UltimediaIE
 from .unistra import UnistraIE
 from .urort import UrortIE
 from .ustream import UstreamIE, UstreamChannelIE
@@ -557,6 +563,7 @@ from .videoweed import VideoWeedIE
 from .vidme import VidmeIE
 from .vidzi import VidziIE
 from .vier import VierIE, VierVideosIE
+from .viewster import ViewsterIE
 from .vimeo import (
     VimeoIE,
     VimeoAlbumIE,
