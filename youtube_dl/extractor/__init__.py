@@ -250,6 +250,7 @@ from .letv import (
     LetvTvIE,
     LetvPlaylistIE
 )
+from .libsyn import LibsynIE
 from .lifenews import LifeNewsIE
 from .liveleak import LiveLeakIE
 from .livestream import (
@@ -347,6 +348,7 @@ from .npo import (
 )
 from .nrk import (
     NRKIE,
+    NRKPlaylistIE,
     NRKTVIE,
 )
 from .ntvde import NTVDeIE
