@@ -495,7 +495,23 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
                 'uploader': '孫艾倫',
                 'title': '[A-made] 變態妍字幕版 太妍 我就是這樣的人',
             },
-        }
+        },
+        # url_encoded_fmt_stream_map is empty string
+        {
+            'url': 'qEJwOuvDf7I',
+            'info_dict': {
+                'id': 'qEJwOuvDf7I',
+                'ext': 'mp4',
+                'title': 'Обсуждение судебной практики по выборам 14 сентября 2014 года в Санкт-Петербурге',
+                'description': '',
+                'upload_date': '20150404',
+                'uploader_id': 'spbelect',
+                'uploader': 'Наблюдатели Петербурга',
+            },
+            'params': {
+                'skip_download': 'requires avconv',
+            }
+        },
     ]
 
     def __init__(self, *args, **kwargs):
@@ -855,7 +871,7 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
                 args = ytplayer_config['args']
                 # Convert to the same format returned by compat_parse_qs
                 video_info = dict((k, [v]) for k, v in args.items())
-                if 'url_encoded_fmt_stream_map' not in args:
+                if not args.get('url_encoded_fmt_stream_map'):
                     raise ValueError('No stream_map present')  # caught below
             except ValueError:
                 # We fallback to the get_video_info pages (used by the embed page)
