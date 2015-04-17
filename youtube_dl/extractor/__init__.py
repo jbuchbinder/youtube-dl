@@ -397,6 +397,11 @@ from .promptfile import PromptFileIE
 from .prosiebensat1 import ProSiebenSat1IE
 from .puls4 import Puls4IE
 from .pyvideo import PyvideoIE
+from .qqmusic import (
+    QQMusicIE,
+    QQMusicSingerIE,
+    QQMusicAlbumIE,
+)
 from .quickvid import QuickVidIE
 from .r7 import R7IE
 from .radiode import RadioDeIE
@@ -481,6 +486,7 @@ from .spike import SpikeIE
 from .sport5 import Sport5IE
 from .sportbox import SportBoxIE
 from .sportdeutschland import SportDeutschlandIE
+from .srf import SrfIE
 from .srmediathek import SRMediathekIE
 from .ssa import SSAIE
 from .stanfordoc import StanfordOpenClassroomIE
