@@ -7,7 +7,9 @@ from ..utils import (
     int_or_none,
     unescapeHTML,
     find_xpath_attr,
+    smuggle_url,
 )
+from .senateisvp import SenateISVPIE
 
 
 class CSpanIE(InfoExtractor):
@@ -35,11 +37,22 @@ class CSpanIE(InfoExtractor):
         }
     }, {
         'url': 'http://www.c-span.org/video/?318608-1/gm-ignition-switch-recall',
+        'md5': '446562a736c6bf97118e389433ed88d4',
         'info_dict': {
             'id': '342759',
+            'ext': 'mp4',
             'title': 'General Motors Ignition Switch Recall',
+            'duration': 14848,
+            'description': 'md5:70c7c3b8fa63fa60d42772440596034c'
         },
-        'playlist_duration_sum': 14855,
+    }, {
+        # Video from senate.gov
+        'url': 'http://www.c-span.org/video/?104517-1/immigration-reforms-needed-protect-skilled-american-workers',
+        'info_dict': {
+            'id': 'judiciary031715',
+            'ext': 'flv',
+            'title': 'Immigration Reforms Needed to Protect Skilled American Workers',
+        }
     }]
 
     def _real_extract(self, url):
@@ -56,7 +69,7 @@ class CSpanIE(InfoExtractor):
                 # present, otherwise this is a stripped version
                 r'<p class=\'initial\'>(.*?)</p>'
             ],
-            webpage, 'description', flags=re.DOTALL)
+            webpage, 'description', flags=re.DOTALL, default=None)
 
         info_url = 'http://c-spanvideo.org/videoLibrary/assets/player/ajax-player.php?os=android&html5=program&id=' + video_id
         data = self._download_json(info_url, video_id)
@@ -67,6 +80,11 @@ class CSpanIE(InfoExtractor):
 
         title = find_xpath_attr(doc, './/string', 'name', 'title').text
         thumbnail = find_xpath_attr(doc, './/string', 'name', 'poster').text
+
+        senate_isvp_url = SenateISVPIE._search_iframe_url(webpage)
+        if senate_isvp_url:
+            surl = smuggle_url(senate_isvp_url, {'force_title': title})
+            return self.url_result(surl, 'SenateISVP', video_id, title)
 
         files = data['video']['files']
 
@@ -81,9 +99,14 @@ class CSpanIE(InfoExtractor):
             'duration': int_or_none(f.get('length', {}).get('#text')),
         } for partnum, f in enumerate(files)]
 
-        return {
-            '_type': 'playlist',
-            'entries': entries,
-            'title': title,
-            'id': video_id,
-        }
+        if len(entries) == 1:
+            entry = dict(entries[0])
+            entry['id'] = video_id
+            return entry
+        else:
+            return {
+                '_type': 'playlist',
+                'entries': entries,
+                'title': title,
+                'id': video_id,
+            }

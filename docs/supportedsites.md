@@ -2,6 +2,8 @@
  - **1tv**: Первый канал
  - **1up.com**
  - **220.ro**
+ - **22tracks:genre**
+ - **22tracks:track**
  - **24video**
  - **3sat**
  - **4tube**
@@ -47,6 +49,7 @@
  - **Bandcamp**
  - **Bandcamp:album**
  - **bbc.co.uk**: BBC iPlayer
+ - **BeatportPro**
  - **Beeg**
  - **BehindKink**
  - **Bet**
@@ -95,6 +98,7 @@
  - **CondeNast**: Condé Nast media group: Condé Nast, GQ, Glamour, Vanity Fair, Vogue, W Magazine, WIRED
  - **Cracked**
  - **Criterion**
+ - **CrooksAndLiars**
  - **Crunchyroll**
  - **crunchyroll:playlist**
  - **CSpan**: C-SPAN
@@ -108,15 +112,19 @@
  - **DctpTv**
  - **DeezerPlaylist**
  - **defense.gouv.fr**
+ - **DHM**: Filmarchiv - Deutsches Historisches Museum
  - **Discovery**
  - **divxstage**: DivxStage
  - **Dotsub**
+ - **DouyuTV**
  - **DRBonanza**
  - **Dropbox**
  - **DrTuber**
  - **DRTV**
  - **Dump**
+ - **Dumpert**
  - **dvtv**: http://video.aktualne.cz/
+ - **EaglePlatform**
  - **EbaumsWorld**
  - **EchoMsk**
  - **eHow**
@@ -144,6 +152,7 @@
  - **Firstpost**
  - **Flickr**
  - **Folketinget**: Folketinget (ft.dk; Danish parliament)
+ - **FootyRoom**
  - **Foxgay**
  - **FoxNews**
  - **france2.fr:generation-quoi**
@@ -158,9 +167,11 @@
  - **Gamekings**
  - **GameOne**
  - **gameone:playlist**
+ - **Gamersyde**
  - **GameSpot**
  - **GameStar**
  - **Gametrailers**
+ - **Gazeta**
  - **GDCVault**
  - **generic**: Generic downloader that works on some sites
  - **GiantBomb**
@@ -211,6 +222,7 @@
  - **jpopsuki.tv**
  - **Jukebox**
  - **Kaltura**
+ - **KanalPlay**: Kanal 5/9/11 Play
  - **Kankan**
  - **Karaoketv**
  - **keek**
@@ -225,6 +237,7 @@
  - **Letv**
  - **LetvPlaylist**
  - **LetvTv**
+ - **Libsyn**
  - **lifenews**: LIFE | NEWS
  - **LiveLeak**
  - **livestream**
@@ -244,6 +257,7 @@
  - **Mgoon**
  - **Minhateca**
  - **MinistryGrid**
+ - **miomio.tv**
  - **mitele.es**
  - **mixcloud**
  - **MLB**
@@ -277,6 +291,8 @@
  - **NBA**
  - **NBC**
  - **NBCNews**
+ - **NBCSports**
+ - **NBCSportsVPlayer**
  - **ndr**: NDR.de - Mediathek
  - **NDTV**
  - **NerdCubedFeed**
@@ -304,6 +320,7 @@
  - **npo.nl:radio**
  - **npo.nl:radio:fragment**
  - **NRK**
+ - **NRKPlaylist**
  - **NRKTV**
  - **ntv.ru**
  - **Nuvid**
@@ -315,6 +332,7 @@
  - **Ooyala**
  - **OpenFilm**
  - **orf:fm4**: radio FM4
+ - **orf:iptv**: iptv.ORF.at
  - **orf:oe1**: Radio Österreich 1
  - **orf:tvthek**: ORF TVthek
  - **parliamentlive.tv**: UK parliament videos
@@ -322,10 +340,12 @@
  - **PBS**
  - **Phoenix**
  - **Photobucket**
+ - **Pladform**
  - **PlanetaPlay**
  - **play.fm**
  - **played.to**
  - **Playvid**
+ - **Playwire**
  - **plus.google**: Google Plus
  - **pluzz.francetv.fr**
  - **podomatic**
@@ -333,16 +353,22 @@
  - **PornHub**
  - **PornHubPlaylist**
  - **Pornotube**
+ - **PornoVoisines**
  - **PornoXO**
+ - **PrimeShareTV**
  - **PromptFile**
  - **prosiebensat1**: ProSiebenSat.1 Digital
  - **Puls4**
  - **Pyvideo**
+ - **QQMusic**
+ - **QQMusicAlbum**
+ - **QQMusicSinger**
  - **QuickVid**
  - **R7**
  - **radio.de**
  - **radiobremen**
  - **radiofrance**
+ - **RadioJavan**
  - **Rai**
  - **RBMARadio**
  - **RedTube**
@@ -359,6 +385,7 @@
  - **RTP**
  - **RTS**: RTS.ch
  - **rtve.es:alacarta**: RTVE a la carta
+ - **rtve.es:infantil**: RTVE infantil
  - **rtve.es:live**: RTVE.es live streams
  - **RUHD**
  - **rutube**: Rutube videos
@@ -367,6 +394,8 @@
  - **rutube:movie**: Rutube movies
  - **rutube:person**: Rutube person videos
  - **RUTV**: RUTV.RU
+ - **safari**: safaribooksonline.com online video
+ - **safari:course**: safaribooksonline.com online courses
  - **Sandia**: Sandia National Laboratories
  - **Sapo**: SAPO Vídeos
  - **savefrom.net**
@@ -400,6 +429,7 @@
  - **southpark.cc.com**
  - **southpark.de**
  - **Space**
+ - **SpankBang**
  - **Spankwire**
  - **Spiegel**
  - **Spiegel:Article**: Articles on spiegel.de
@@ -408,7 +438,9 @@
  - **Sport5**
  - **SportBox**
  - **SportDeutschland**
+ - **Srf**
  - **SRMediathek**: Saarländischer Rundfunk
+ - **SSA**
  - **stanfordoc**: Stanford Open ClassRoom
  - **Steam**
  - **streamcloud.eu**
@@ -478,13 +510,17 @@
  - **Ubu**
  - **udemy**
  - **udemy:course**
+ - **UDNEmbed**
+ - **Ultimedia**
  - **Unistra**
  - **Urort**: NRK P3 Urørt
  - **ustream**
  - **ustream:channel**
+ - **Varzesh3**
  - **Vbox7**
  - **VeeHD**
  - **Veoh**
+ - **Vessel**
  - **Vesti**: Вести.Ru
  - **Vevo**
  - **VGTV**
@@ -505,6 +541,7 @@
  - **Vidzi**
  - **vier**
  - **vier:videos**
+ - **Viewster**
  - **viki**
  - **vimeo**
  - **vimeo:album**
@@ -551,6 +588,9 @@
  - **XXXYMovies**
  - **Yahoo**: Yahoo screen and movies
  - **Yam**
+ - **yandexmusic:album**: Яндекс.Музыка - Альбом
+ - **yandexmusic:playlist**: Яндекс.Музыка - Плейлист
+ - **yandexmusic:track**: Яндекс.Музыка - Трек
  - **YesJapan**
  - **Ynet**
  - **YouJizz**
@@ -569,7 +609,7 @@
  - **youtube:show**: YouTube.com (multi-season) shows
  - **youtube:subscriptions**: YouTube.com subscriptions feed, "ytsubs" keyword (requires authentication)
  - **youtube:user**: YouTube.com user videos (URL or "ytuser" keyword)
- - **youtube:watch_later**: Youtube watch later list, ":ytwatchlater" for short (requires authentication)
+ - **youtube:watchlater**: Youtube watch later list, ":ytwatchlater" for short (requires authentication)
  - **Zapiks**
  - **ZDF**
  - **ZDFChannel**

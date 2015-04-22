@@ -75,7 +75,7 @@ def preferredencoding():
     try:
         pref = locale.getpreferredencoding()
         'TEST'.encode(pref)
-    except:
+    except Exception:
         pref = 'UTF-8'
 
     return pref
@@ -127,7 +127,7 @@ def write_json_file(obj, fn):
             except OSError:
                 pass
         os.rename(tf.name, fn)
-    except:
+    except Exception:
         try:
             os.remove(tf.name)
         except OSError:
@@ -252,15 +252,12 @@ def sanitize_open(filename, open_mode):
             raise
 
         # In case of error, try to remove win32 forbidden chars
-        alt_filename = os.path.join(
-            re.sub('[/<>:"\\|\\\\?\\*]', '#', path_part)
-            for path_part in os.path.split(filename)
-        )
+        alt_filename = sanitize_path(filename)
         if alt_filename == filename:
             raise
         else:
             # An exception here should be caught in the caller
-            stream = open(encodeFilename(filename), open_mode)
+            stream = open(encodeFilename(alt_filename), open_mode)
             return (stream, alt_filename)
 
 
@@ -311,6 +308,31 @@ def sanitize_filename(s, restricted=False, is_id=False):
     return result
 
 
+def sanitize_path(s):
+    """Sanitizes and normalizes path on Windows"""
+    if sys.platform != 'win32':
+        return s
+    drive_or_unc, _ = os.path.splitdrive(s)
+    if sys.version_info < (2, 7) and not drive_or_unc:
+        drive_or_unc, _ = os.path.splitunc(s)
+    norm_path = os.path.normpath(remove_start(s, drive_or_unc)).split(os.path.sep)
+    if drive_or_unc:
+        norm_path.pop(0)
+    sanitized_path = [
+        path_part if path_part in ['.', '..'] else re.sub('(?:[/<>:"\\|\\\\?\\*]|\.$)', '#', path_part)
+        for path_part in norm_path]
+    if drive_or_unc:
+        sanitized_path.insert(0, drive_or_unc + os.path.sep)
+    return os.path.join(*sanitized_path)
+
+
+def sanitize_url_path_consecutive_slashes(url):
+    """Collapses consecutive slashes in URLs' path"""
+    parsed_url = list(compat_urlparse.urlparse(url))
+    parsed_url[2] = re.sub(r'/{2,}', '/', parsed_url[2])
+    return compat_urlparse.urlunparse(parsed_url)
+
+
 def orderedSet(iterable):
     """ Remove all duplicates from the input iterable """
     res = []
@@ -326,7 +348,7 @@ def _htmlentity_transform(entity):
     if entity in compat_html_entities.name2codepoint:
         return compat_chr(compat_html_entities.name2codepoint[entity])
 
-    mobj = re.match(r'#(x?[0-9]+)', entity)
+    mobj = re.match(r'#(x[0-9a-fA-F]+|[0-9]+)', entity)
     if mobj is not None:
         numstr = mobj.group(1)
         if numstr.startswith('x'):
@@ -430,6 +452,17 @@ def make_HTTPS_handler(params, **kwargs):
         return YoutubeDLHTTPSHandler(params, context=context, **kwargs)
 
 
+def bug_reports_message():
+    if ytdl_is_updateable():
+        update_cmd = 'type  youtube-dl -U  to update'
+    else:
+        update_cmd = 'see  https://yt-dl.org/update  on how to update'
+    msg = '; please report this issue on https://yt-dl.org/bug .'
+    msg += ' Make sure you are using the latest version; %s.' % update_cmd
+    msg += ' Be sure to call youtube-dl with the --verbose flag and include its complete output.'
+    return msg
+
+
 class ExtractorError(Exception):
     """Error during info extraction."""
 
@@ -445,13 +478,7 @@ class ExtractorError(Exception):
         if cause:
             msg += ' (caused by %r)' % cause
         if not expected:
-            if ytdl_is_updateable():
-                update_cmd = 'type  youtube-dl -U  to update'
-            else:
-                update_cmd = 'see  https://yt-dl.org/update  on how to update'
-            msg += '; please report this issue on https://yt-dl.org/bug .'
-            msg += ' Make sure you are using the latest version; %s.' % update_cmd
-            msg += ' Be sure to call youtube-dl with the --verbose flag and include its complete output.'
+            msg += bug_reports_message()
         super(ExtractorError, self).__init__(msg)
 
         self.traceback = tb
@@ -708,7 +735,8 @@ def unified_strdate(date_str, day_first=True):
     # Replace commas
     date_str = date_str.replace(',', ' ')
     # %z (UTC offset) is only supported in python>=3.2
-    date_str = re.sub(r' ?(\+|-)[0-9]{2}:?[0-9]{2}$', '', date_str)
+    if not re.match(r'^[0-9]{1,2}-[0-9]{1,2}-[0-9]{4}$', date_str):
+        date_str = re.sub(r' ?(\+|-)[0-9]{2}:?[0-9]{2}$', '', date_str)
     # Remove AM/PM + timezone
     date_str = re.sub(r'(?i)\s*(?:AM|PM)(?:\s+[A-Z]+)?', '', date_str)
 
@@ -737,6 +765,7 @@ def unified_strdate(date_str, day_first=True):
     ]
     if day_first:
         format_expressions.extend([
+            '%d-%m-%Y',
             '%d.%m.%Y',
             '%d/%m/%Y',
             '%d/%m/%y',
@@ -744,6 +773,7 @@ def unified_strdate(date_str, day_first=True):
         ])
     else:
         format_expressions.extend([
+            '%m-%d-%Y',
             '%m.%d.%Y',
             '%m/%d/%Y',
             '%m/%d/%y',
@@ -1555,7 +1585,7 @@ def js_to_json(code):
         '(?:[^'\\]*(?:\\\\|\\['"nu]))*[^'\\]*'|
         [a-zA-Z_][.a-zA-Z_0-9]*
         ''', fix_kv, code)
-    res = re.sub(r',(\s*\])', lambda m: m.group(1), res)
+    res = re.sub(r',(\s*[\]}])', lambda m: m.group(1), res)
     return res
 
 

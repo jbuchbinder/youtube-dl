@@ -37,6 +37,7 @@ from .bandcamp import BandcampIE, BandcampAlbumIE
 from .bbccouk import BBCCoUkIE
 from .beeg import BeegIE
 from .behindkink import BehindKinkIE
+from .beatportpro import BeatportProIE
 from .bet import BetIE
 from .bild import BildIE
 from .bilibili import BiliBiliIE
@@ -69,6 +70,7 @@ from .chirbit import (
     ChirbitProfileIE,
 )
 from .cinchcast import CinchcastIE
+from .cinemassacre import CinemassacreIE
 from .clipfish import ClipfishIE
 from .cliphunter import CliphunterIE
 from .clipsyndicate import ClipsyndicateIE
@@ -89,6 +91,7 @@ from .commonmistakes import CommonMistakesIE, UnicodeBOMIE
 from .condenast import CondeNastIE
 from .cracked import CrackedIE
 from .criterion import CriterionIE
+from .crooksandliars import CrooksAndLiarsIE
 from .crunchyroll import (
     CrunchyrollIE,
     CrunchyrollShowPlaylistIE
@@ -105,17 +108,21 @@ from .dbtv import DBTVIE
 from .dctp import DctpTvIE
 from .deezer import DeezerPlaylistIE
 from .dfb import DFBIE
+from .dhm import DHMIE
 from .dotsub import DotsubIE
+from .douyutv import DouyuTVIE
 from .dreisat import DreiSatIE
 from .drbonanza import DRBonanzaIE
 from .drtuber import DrTuberIE
 from .drtv import DRTVIE
 from .dvtv import DVTVIE
 from .dump import DumpIE
+from .dumpert import DumpertIE
 from .defense import DefenseGouvFrIE
 from .discovery import DiscoveryIE
 from .divxstage import DivxStageIE
 from .dropbox import DropboxIE
+from .eagleplatform import EaglePlatformIE
 from .ebaumsworld import EbaumsWorldIE
 from .echomsk import EchoMskIE
 from .ehow import EHowIE
@@ -150,6 +157,7 @@ from .fktv import (
 )
 from .flickr import FlickrIE
 from .folketinget import FolketingetIE
+from .footyroom import FootyRoomIE
 from .fourtube import FourTubeIE
 from .foxgay import FoxgayIE
 from .foxnews import FoxNewsIE
@@ -171,11 +179,14 @@ from .gameone import (
     GameOneIE,
     GameOnePlaylistIE,
 )
+from .gamersyde import GamersydeIE
 from .gamespot import GameSpotIE
 from .gamestar import GameStarIE
 from .gametrailers import GametrailersIE
+from .gazeta import GazetaIE
 from .gdcvault import GDCVaultIE
 from .generic import GenericIE
+from .gfycat import GfycatIE
 from .giantbomb import GiantBombIE
 from .giga import GigaIE
 from .glide import GlideIE
@@ -228,6 +239,7 @@ from .jove import JoveIE
 from .jukebox import JukeboxIE
 from .jpopsukitv import JpopsukiIE
 from .kaltura import KalturaIE
+from .kanalplay import KanalPlayIE
 from .kankan import KankanIE
 from .karaoketv import KaraoketvIE
 from .keezmovies import KeezMoviesIE
@@ -244,6 +256,7 @@ from .letv import (
     LetvTvIE,
     LetvPlaylistIE
 )
+from .libsyn import LibsynIE
 from .lifenews import LifeNewsIE
 from .liveleak import LiveLeakIE
 from .livestream import (
@@ -262,12 +275,13 @@ from .macgamestore import MacGameStoreIE
 from .mailru import MailRuIE
 from .malemotion import MalemotionIE
 from .mdr import MDRIE
-from .megavideozeu import MegavideozeuIE
+from .megavideoz import MegaVideozIE
 from .metacafe import MetacafeIE
 from .metacritic import MetacriticIE
 from .mgoon import MgoonIE
 from .minhateca import MinhatecaIE
 from .ministrygrid import MinistryGridIE
+from .miomio import MioMioIE
 from .mit import TechTVMITIE, MITIE, OCWMITIE
 from .mitele import MiTeleIE
 from .mixcloud import MixcloudIE
@@ -303,6 +317,8 @@ from .nba import NBAIE
 from .nbc import (
     NBCIE,
     NBCNewsIE,
+    NBCSportsIE,
+    NBCSportsVPlayerIE,
 )
 from .ndr import NDRIE
 from .ndtv import NDTVIE
@@ -341,6 +357,7 @@ from .npo import (
 )
 from .nrk import (
     NRKIE,
+    NRKPlaylistIE,
     NRKTVIE,
 )
 from .ntvde import NTVDeIE
@@ -355,6 +372,7 @@ from .orf import (
     ORFTVthekIE,
     ORFOE1IE,
     ORFFM4IE,
+    ORFIPTVIE,
 )
 from .parliamentliveuk import ParliamentLiveUKIE
 from .patreon import PatreonIE
@@ -362,9 +380,11 @@ from .pbs import PBSIE
 from .phoenix import PhoenixIE
 from .photobucket import PhotobucketIE
 from .planetaplay import PlanetaPlayIE
+from .pladform import PladformIE
 from .played import PlayedIE
 from .playfm import PlayFMIE
 from .playvid import PlayvidIE
+from .playwire import PlaywireIE
 from .podomatic import PodomaticIE
 from .pornhd import PornHdIE
 from .pornhub import (
@@ -372,14 +392,22 @@ from .pornhub import (
     PornHubPlaylistIE,
 )
 from .pornotube import PornotubeIE
+from .pornovoisines import PornoVoisinesIE
 from .pornoxo import PornoXOIE
+from .primesharetv import PrimeShareTVIE
 from .promptfile import PromptFileIE
 from .prosiebensat1 import ProSiebenSat1IE
 from .puls4 import Puls4IE
 from .pyvideo import PyvideoIE
+from .qqmusic import (
+    QQMusicIE,
+    QQMusicSingerIE,
+    QQMusicAlbumIE,
+)
 from .quickvid import QuickVidIE
 from .r7 import R7IE
 from .radiode import RadioDeIE
+from .radiojavan import RadioJavanIE
 from .radiobremen import RadioBremenIE
 from .radiofrance import RadioFranceIE
 from .rai import RaiIE
@@ -398,7 +426,7 @@ from .rtlnow import RTLnowIE
 from .rtl2 import RTL2IE
 from .rtp import RTPIE
 from .rts import RTSIE
-from .rtve import RTVEALaCartaIE, RTVELiveIE
+from .rtve import RTVEALaCartaIE, RTVELiveIE, RTVEInfantilIE
 from .ruhd import RUHDIE
 from .rutube import (
     RutubeIE,
@@ -409,13 +437,18 @@ from .rutube import (
 )
 from .rutv import RUTVIE
 from .sandia import SandiaIE
+from .safari import (
+    SafariIE,
+    SafariCourseIE,
+)
 from .sapo import SapoIE
 from .savefrom import SaveFromIE
 from .sbs import SBSIE
 from .scivee import SciVeeIE
 from .screencast import ScreencastIE
 from .screencastomatic import ScreencastOMaticIE
-from .screenwavemedia import CinemassacreIE, ScreenwaveMediaIE, TeamFourIE
+from .screenwavemedia import ScreenwaveMediaIE, TeamFourIE
+from .senateisvp import SenateISVPIE
 from .servingsys import ServingSysIE
 from .sexu import SexuIE
 from .sexykarma import SexyKarmaIE
@@ -448,6 +481,7 @@ from .southpark import (
     SouthparkDeIE,
 )
 from .space import SpaceIE
+from .spankbang import SpankBangIE
 from .spankwire import SpankwireIE
 from .spiegel import SpiegelIE, SpiegelArticleIE
 from .spiegeltv import SpiegeltvIE
@@ -455,7 +489,9 @@ from .spike import SpikeIE
 from .sport5 import Sport5IE
 from .sportbox import SportBoxIE
 from .sportdeutschland import SportDeutschlandIE
+from .srf import SrfIE
 from .srmediathek import SRMediathekIE
+from .ssa import SSAIE
 from .stanfordoc import StanfordOpenClassroomIE
 from .steam import SteamIE
 from .streamcloud import StreamcloudIE
@@ -514,6 +550,10 @@ from .tvp import TvpIE, TvpSeriesIE
 from .tvplay import TVPlayIE
 from .tweakers import TweakersIE
 from .twentyfourvideo import TwentyFourVideoIE
+from .twentytwotracks import (
+    TwentyTwoTracksIE,
+    TwentyTwoTracksGenreIE
+)
 from .twitch import (
     TwitchVideoIE,
     TwitchChapterIE,
@@ -528,12 +568,16 @@ from .udemy import (
     UdemyIE,
     UdemyCourseIE
 )
+from .udn import UDNEmbedIE
+from .ultimedia import UltimediaIE
 from .unistra import UnistraIE
 from .urort import UrortIE
 from .ustream import UstreamIE, UstreamChannelIE
+from .varzesh3 import Varzesh3IE
 from .vbox7 import Vbox7IE
 from .veehd import VeeHDIE
 from .veoh import VeohIE
+from .vessel import VesselIE
 from .vesti import VestiIE
 from .vevo import VevoIE
 from .vgtv import VGTVIE
@@ -551,6 +595,7 @@ from .videoweed import VideoWeedIE
 from .vidme import VidmeIE
 from .vidzi import VidziIE
 from .vier import VierIE, VierVideosIE
+from .viewster import ViewsterIE
 from .vimeo import (
     VimeoIE,
     VimeoAlbumIE,
@@ -607,6 +652,11 @@ from .yahoo import (
     YahooSearchIE,
 )
 from .yam import YamIE
+from .yandexmusic import (
+    YandexMusicTrackIE,
+    YandexMusicAlbumIE,
+    YandexMusicPlaylistIE,
+)
 from .yesjapan import YesJapanIE
 from .ynet import YnetIE
 from .youjizz import YouJizzIE
