@@ -1091,7 +1091,11 @@ class YoutubeDL(object):
 
         req_format = self.params.get('format')
         if req_format is None:
-            req_format = 'best'
+            req_format_list = []
+            if info_dict['extractor'] in ['youtube', 'ted'] and FFmpegMergerPP(self).available:
+                req_format_list.append('bestvideo+bestaudio')
+            req_format_list.append('best')
+            req_format = '/'.join(req_format_list)
         formats_to_download = []
         if req_format == 'all':
             formats_to_download = formats
@@ -1361,7 +1365,7 @@ class YoutubeDL(object):
                 if info_dict.get('requested_formats') is not None:
                     downloaded = []
                     success = True
-                    merger = FFmpegMergerPP(self, not self.params.get('keepvideo'))
+                    merger = FFmpegMergerPP(self)
                     if not merger.available:
                         postprocessors = []
                         self.report_warning('You have requested multiple '
@@ -1369,16 +1373,42 @@ class YoutubeDL(object):
                                             ' The formats won\'t be merged')
                     else:
                         postprocessors = [merger]
-                    for f in info_dict['requested_formats']:
-                        new_info = dict(info_dict)
-                        new_info.update(f)
-                        fname = self.prepare_filename(new_info)
-                        fname = prepend_extension(fname, 'f%s' % f['format_id'])
-                        downloaded.append(fname)
-                        partial_success = dl(fname, new_info)
-                        success = success and partial_success
-                    info_dict['__postprocessors'] = postprocessors
-                    info_dict['__files_to_merge'] = downloaded
+
+                    def compatible_formats(formats):
+                        video, audio = formats
+                        # Check extension
+                        video_ext, audio_ext = audio.get('ext'), video.get('ext')
+                        if video_ext and audio_ext:
+                            COMPATIBLE_EXTS = (
+                                ('mp3', 'mp4', 'm4a', 'm4p', 'm4b', 'm4r', 'm4v'),
+                                ('webm')
+                            )
+                            for exts in COMPATIBLE_EXTS:
+                                if video_ext in exts and audio_ext in exts:
+                                    return True
+                        # TODO: Check acodec/vcodec
+                        return False
+
+                    requested_formats = info_dict['requested_formats']
+                    if self.params.get('merge_output_format') is None and not compatible_formats(requested_formats):
+                        filename = os.path.splitext(filename)[0] + '.mkv'
+                        self.report_warning('You have requested formats uncompatible for merge. '
+                                            'The formats will be merged into mkv')
+                    if os.path.exists(encodeFilename(filename)):
+                        self.to_screen(
+                            '[download] %s has already been downloaded and '
+                            'merged' % filename)
+                    else:
+                        for f in requested_formats:
+                            new_info = dict(info_dict)
+                            new_info.update(f)
+                            fname = self.prepare_filename(new_info)
+                            fname = prepend_extension(fname, 'f%s' % f['format_id'])
+                            downloaded.append(fname)
+                            partial_success = dl(fname, new_info)
+                            success = success and partial_success
+                        info_dict['__postprocessors'] = postprocessors
+                        info_dict['__files_to_merge'] = downloaded
                 else:
                     # Just a single file
                     success = dl(filename, info_dict)
@@ -1486,24 +1516,17 @@ class YoutubeDL(object):
             pps_chain.extend(ie_info['__postprocessors'])
         pps_chain.extend(self._pps)
         for pp in pps_chain:
-            keep_video = None
-            old_filename = info['filepath']
             try:
-                keep_video_wish, info = pp.run(info)
-                if keep_video_wish is not None:
-                    if keep_video_wish:
-                        keep_video = keep_video_wish
-                    elif keep_video is None:
-                        # No clear decision yet, let IE decide
-                        keep_video = keep_video_wish
+                files_to_delete, info = pp.run(info)
             except PostProcessingError as e:
                 self.report_error(e.msg)
-            if keep_video is False and not self.params.get('keepvideo', False):
-                try:
+            if files_to_delete and not self.params.get('keepvideo', False):
+                for old_filename in files_to_delete:
                     self.to_screen('Deleting original file %s (pass -k to keep)' % old_filename)
-                    os.remove(encodeFilename(old_filename))
-                except (IOError, OSError):
-                    self.report_warning('Unable to remove downloaded video file')
+                    try:
+                        os.remove(encodeFilename(old_filename))
+                    except (IOError, OSError):
+                        self.report_warning('Unable to remove downloaded original file')
 
     def _make_archive_id(self, info_dict):
         # Future-proof against any change in case
