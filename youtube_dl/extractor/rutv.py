@@ -84,11 +84,20 @@ class RUTVIE(InfoExtractor):
                 'title': 'Сочи-2014. Биатлон. Индивидуальная гонка. Мужчины ',
                 'description': 'md5:9e0ed5c9d2fa1efbfdfed90c9a6d179c',
             },
+            'skip': 'Translation has finished',
+        },
+        {
+            'url': 'http://live.russia.tv/index/index/channel_id/3',
+            'info_dict': {
+                'id': '21',
+                'ext': 'mp4',
+                'title': 're:^Россия 24. Прямой эфир [0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}$',
+                'is_live': True,
+            },
             'params': {
-                # rtmp download
+                # m3u8 download
                 'skip_download': True,
             },
-            'skip': 'Translation has finished',
         },
     ]
 
@@ -181,12 +190,15 @@ class RUTVIE(InfoExtractor):
 
         self._sort_formats(formats)
 
+        is_live = video_type == 'live'
+
         return {
             'id': video_id,
-            'title': title,
+            'title': self._live_title(title) if is_live else title,
             'description': description,
             'thumbnail': thumbnail,
             'view_count': view_count,
             'duration': duration,
             'formats': formats,
+            'is_live': is_live,
         }

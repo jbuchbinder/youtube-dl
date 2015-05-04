@@ -32,6 +32,7 @@ from .atresplayer import AtresPlayerIE
 from .atttechchannel import ATTTechChannelIE
 from .audiomack import AudiomackIE, AudiomackAlbumIE
 from .azubu import AzubuIE
+from .baidu import BaiduVideoIE
 from .bambuser import BambuserIE, BambuserChannelIE
 from .bandcamp import BandcampIE, BandcampAlbumIE
 from .bbccouk import BBCCoUkIE
@@ -161,6 +162,7 @@ from .footyroom import FootyRoomIE
 from .fourtube import FourTubeIE
 from .foxgay import FoxgayIE
 from .foxnews import FoxNewsIE
+from .foxsports import FoxSportsIE
 from .franceculture import FranceCultureIE
 from .franceinter import FranceInterIE
 from .francetv import (
@@ -198,7 +200,6 @@ from .googleplus import GooglePlusIE
 from .googlesearch import GoogleSearchIE
 from .gorillavid import GorillaVidIE
 from .goshgay import GoshgayIE
-from .grooveshark import GroovesharkIE
 from .groupon import GrouponIE
 from .hark import HarkIE
 from .hearthisat import HearThisAtIE
@@ -377,6 +378,7 @@ from .orf import (
 from .parliamentliveuk import ParliamentLiveUKIE
 from .patreon import PatreonIE
 from .pbs import PBSIE
+from .philharmoniedeparis import PhilharmonieDeParisIE
 from .phoenix import PhoenixIE
 from .photobucket import PhotobucketIE
 from .planetaplay import PlanetaPlayIE
@@ -478,6 +480,7 @@ from .soundgasm import (
 )
 from .southpark import (
     SouthParkIE,
+    SouthParkEsIE,
     SouthparkDeIE,
 )
 from .space import SpaceIE

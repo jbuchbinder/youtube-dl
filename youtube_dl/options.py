@@ -332,10 +332,6 @@ def parseOpts(overrideArguments=None):
         action='store_true', dest='prefer_free_formats', default=False,
         help='Prefer free video formats unless a specific one is requested')
     video_format.add_option(
-        '--max-quality',
-        action='store', dest='format_limit', metavar='FORMAT',
-        help='Highest quality format to download')
-    video_format.add_option(
         '-F', '--list-formats',
         action='store_true', dest='listformats',
         help='List all available formats')
@@ -641,7 +637,7 @@ def parseOpts(overrideArguments=None):
     filesystem.add_option(
         '--write-annotations',
         action='store_true', dest='writeannotations', default=False,
-        help='Write video annotations to a .annotation file')
+        help='Write video annotations to a .annotations.xml file')
     filesystem.add_option(
         '--load-info',
         dest='load_info_filename', metavar='FILE',
@@ -702,7 +698,7 @@ def parseOpts(overrideArguments=None):
     postproc.add_option(
         '--embed-subs',
         action='store_true', dest='embedsubtitles', default=False,
-        help='Embed subtitles in the video (only for mp4 videos)')
+        help='Embed subtitles in the video (only for mkv and mp4 videos)')
     postproc.add_option(
         '--embed-thumbnail',
         action='store_true', dest='embedthumbnail', default=False,

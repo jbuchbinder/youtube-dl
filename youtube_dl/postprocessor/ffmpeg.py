@@ -20,6 +20,7 @@ from ..utils import (
     prepend_extension,
     shell_quote,
     subtitles_filename,
+    dfxp2srt,
 )
 
 
@@ -280,6 +281,8 @@ class FFmpegExtractAudioPP(FFmpegPostProcessor):
                 errnote='Cannot update utime of audio file')
 
         information['filepath'] = new_path
+        information['ext'] = extension
+
         return [path], information
 
 
@@ -498,8 +501,8 @@ class FFmpegEmbedSubtitlePP(FFmpegPostProcessor):
         return cls._lang_map.get(code[:2])
 
     def run(self, information):
-        if information['ext'] != 'mp4':
-            self._downloader.to_screen('[ffmpeg] Subtitles can only be embedded in mp4 files')
+        if information['ext'] not in ['mp4', 'mkv']:
+            self._downloader.to_screen('[ffmpeg] Subtitles can only be embedded in mp4 or mkv files')
             return [], information
         subtitles = information.get('requested_subtitles')
         if not subtitles:
@@ -517,8 +520,9 @@ class FFmpegEmbedSubtitlePP(FFmpegPostProcessor):
             # Don't copy the existing subtitles, we may be running the
             # postprocessor a second time
             '-map', '-0:s',
-            '-c:s', 'mov_text',
         ]
+        if information['ext'] == 'mp4':
+            opts += ['-c:s', 'mov_text']
         for (i, lang) in enumerate(sub_langs):
             opts.extend(['-map', '%d:0' % (i + 1)])
             lang_code = self._conver_lang_code(lang)
@@ -588,21 +592,6 @@ class FFmpegMergerPP(FFmpegPostProcessor):
         return info['__files_to_merge'], info
 
 
-class FFmpegAudioFixPP(FFmpegPostProcessor):
-    def run(self, info):
-        filename = info['filepath']
-        temp_filename = prepend_extension(filename, 'temp')
-
-        options = ['-vn', '-acodec', 'copy']
-        self._downloader.to_screen('[ffmpeg] Fixing audio file "%s"' % filename)
-        self.run_ffmpeg(filename, temp_filename, options)
-
-        os.remove(encodeFilename(filename))
-        os.rename(encodeFilename(temp_filename), encodeFilename(filename))
-
-        return [], info
-
-
 class FFmpegFixupStretchedPP(FFmpegPostProcessor):
     def run(self, info):
         stretched_ratio = info.get('stretched_ratio')
@@ -664,6 +653,30 @@ class FFmpegSubtitlesConvertorPP(FFmpegPostProcessor):
                     'format' % new_ext)
                 continue
             new_file = subtitles_filename(filename, lang, new_ext)
+
+            if ext == 'dfxp' or ext == 'ttml':
+                self._downloader.report_warning(
+                    'You have requested to convert dfxp (TTML) subtitles into another format, '
+                    'which results in style information loss')
+
+                dfxp_file = subtitles_filename(filename, lang, ext)
+                srt_file = subtitles_filename(filename, lang, 'srt')
+
+                with io.open(dfxp_file, 'rt', encoding='utf-8') as f:
+                    srt_data = dfxp2srt(f.read())
+
+                with io.open(srt_file, 'wt', encoding='utf-8') as f:
+                    f.write(srt_data)
+
+                ext = 'srt'
+                subs[lang] = {
+                    'ext': 'srt',
+                    'data': srt_data
+                }
+
+                if new_ext == 'srt':
+                    continue
+
             self.run_ffmpeg(
                 subtitles_filename(filename, lang, ext),
                 new_file, ['-f', new_format])
