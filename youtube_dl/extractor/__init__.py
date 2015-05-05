@@ -363,7 +363,10 @@ from .nrk import (
 )
 from .ntvde import NTVDeIE
 from .ntvru import NTVRuIE
-from .nytimes import NYTimesIE
+from .nytimes import (
+    NYTimesIE,
+    NYTimesArticleIE,
+)
 from .nuvid import NuvidIE
 from .odnoklassniki import OdnoklassnikiIE
 from .oktoberfesttv import OktoberfestTVIE
@@ -481,7 +484,8 @@ from .soundgasm import (
 from .southpark import (
     SouthParkIE,
     SouthParkEsIE,
-    SouthparkDeIE,
+    SouthParkDeIE,
+    SouthParkNlIE
 )
 from .space import SpaceIE
 from .spankbang import SpankBangIE

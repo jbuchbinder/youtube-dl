@@ -87,7 +87,7 @@ class RUTVIE(InfoExtractor):
             'skip': 'Translation has finished',
         },
         {
-            'url': 'http://live.russia.tv/index/index/channel_id/3',
+            'url': 'http://player.rutv.ru/iframe/live/id/21/showZoomBtn/false/isPlay/true/',
             'info_dict': {
                 'id': '21',
                 'ext': 'mp4',
@@ -128,8 +128,10 @@ class RUTVIE(InfoExtractor):
         elif video_path.startswith('index/iframe/cast_id'):
             video_type = 'live'
 
+        is_live = video_type == 'live'
+
         json_data = self._download_json(
-            'http://player.rutv.ru/iframe/%splay/id/%s' % ('live-' if video_type == 'live' else '', video_id),
+            'http://player.rutv.ru/iframe/%splay/id/%s' % ('live-' if is_live else '', video_id),
             video_id, 'Downloading JSON')
 
         if json_data['errors']:
@@ -156,6 +158,7 @@ class RUTVIE(InfoExtractor):
 
         for transport, links in media['sources'].items():
             for quality, url in links.items():
+                preference = -1 if priority_transport == transport else -2
                 if transport == 'rtmp':
                     mobj = re.search(r'^(?P<url>rtmp://[^/]+/(?P<app>.+))/(?P<playpath>.+)$', url)
                     if not mobj:
@@ -169,9 +172,11 @@ class RUTVIE(InfoExtractor):
                         'rtmp_live': True,
                         'ext': 'flv',
                         'vbr': int(quality),
+                        'preference': preference,
                     }
                 elif transport == 'm3u8':
-                    formats.extend(self._extract_m3u8_formats(url, video_id, 'mp4'))
+                    formats.extend(self._extract_m3u8_formats(
+                        url, video_id, 'mp4', preference=preference, m3u8_id='hls'))
                     continue
                 else:
                     fmt = {
@@ -181,16 +186,10 @@ class RUTVIE(InfoExtractor):
                     'width': width,
                     'height': height,
                     'format_id': '%s-%s' % (transport, quality),
-                    'preference': -1 if priority_transport == transport else -2,
                 })
                 formats.append(fmt)
 
-        if not formats:
-            raise ExtractorError('No media links available for %s' % video_id)
-
         self._sort_formats(formats)
-
-        is_live = video_type == 'live'
 
         return {
             'id': video_id,
