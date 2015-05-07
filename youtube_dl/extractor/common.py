@@ -764,7 +764,7 @@ class InfoExtractor(object):
                 f.get('fps') if f.get('fps') is not None else -1,
                 f.get('filesize_approx') if f.get('filesize_approx') is not None else -1,
                 f.get('source_preference') if f.get('source_preference') is not None else -1,
-                f.get('format_id'),
+                f.get('format_id') if f.get('format_id') is not None else '',
             )
         formats.sort(key=_formats_key)
 
@@ -896,7 +896,7 @@ class InfoExtractor(object):
                 format_id = []
                 if m3u8_id:
                     format_id.append(m3u8_id)
-                last_media_name = last_media.get('NAME') if last_media else None
+                last_media_name = last_media.get('NAME') if last_media and last_media.get('TYPE') != 'SUBTITLES' else None
                 format_id.append(last_media_name if last_media_name else '%d' % (tbr if tbr else len(formats)))
                 f = {
                     'format_id': '-'.join(format_id),
