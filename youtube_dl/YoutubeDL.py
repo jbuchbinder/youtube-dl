@@ -260,7 +260,6 @@ class YoutubeDL(object):
     The following options are used by the post processors:
     prefer_ffmpeg:     If True, use ffmpeg instead of avconv if both are available,
                        otherwise prefer avconv.
-    exec_cmd:          Arbitrary command to run after downloading
     """
 
     params = None
@@ -1086,7 +1085,9 @@ class YoutubeDL(object):
         req_format = self.params.get('format')
         if req_format is None:
             req_format_list = []
-            if info_dict['extractor'] in ['youtube', 'ted'] and FFmpegMergerPP(self).available:
+            if (self.params.get('outtmpl', DEFAULT_OUTTMPL) != '-'
+                    and info_dict['extractor'] in ['youtube', 'ted']
+                    and FFmpegMergerPP(self).available):
                 req_format_list.append('bestvideo+bestaudio')
             req_format_list.append('best')
             req_format = '/'.join(req_format_list)

@@ -37,6 +37,7 @@ from .condenast import CondeNastIE
 from .udn import UDNEmbedIE
 from .senateisvp import SenateISVPIE
 from .bliptv import BlipTVIE
+from .svt import SVTIE
 
 
 class GenericIE(InfoExtractor):
@@ -413,19 +414,6 @@ class GenericIE(InfoExtractor):
                 'thumbnail': 're:^https?://.*\.jpg$',
             },
         },
-        # MLB articles
-        {
-            'url': 'http://m.mlb.com/news/article/118550098/blue-jays-kevin-pillar-goes-spidey-up-the-wall-to-rob-tim-beckham-of-a-homer',
-            'md5': 'b190e70141fb9a1552a85426b4da1b5d',
-            'info_dict': {
-                'id': '75609783',
-                'ext': 'mp4',
-                'title': 'Must C: Pillar climbs for catch',
-                'description': '4/15/15: Blue Jays outfielder Kevin Pillar continues his defensive dominance by climbing the wall in left to rob Tim Beckham of a home run',
-                'timestamp': 1429124820,
-                'upload_date': '20150415',
-            }
-        },
         # Wistia embed
         {
             'url': 'http://education-portal.com/academy/lesson/north-american-exploration-failed-colonies-of-spain-france-england.html#lesson',
@@ -656,6 +644,17 @@ class GenericIE(InfoExtractor):
                 'id': '518726732',
                 'ext': 'mp4',
                 'title': 'Facebook Creates "On This Day" | Crunch Report',
+            },
+        },
+        # SVT embed
+        {
+            'url': 'http://www.svt.se/sport/ishockey/jagr-tacklar-giroux-under-intervjun',
+            'info_dict': {
+                'id': '2900353',
+                'ext': 'flv',
+                'title': 'Här trycker Jagr till Giroux (under SVT-intervjun)',
+                'duration': 27,
+                'age_limit': 0,
             },
         },
         # RSS feed with enclosure
@@ -1090,6 +1089,11 @@ class GenericIE(InfoExtractor):
         bliptv_url = BlipTVIE._extract_url(webpage)
         if bliptv_url:
             return self.url_result(bliptv_url, 'BlipTV')
+
+        # Look for SVT player
+        svt_url = SVTIE._extract_url(webpage)
+        if svt_url:
+            return self.url_result(svt_url, 'SVT')
 
         # Look for embedded condenast player
         matches = re.findall(

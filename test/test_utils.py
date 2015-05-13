@@ -40,7 +40,6 @@ from youtube_dl.utils import (
     read_batch_urls,
     sanitize_filename,
     sanitize_path,
-    sanitize_url_path_consecutive_slashes,
     prepend_extension,
     replace_extension,
     shell_quote,
@@ -175,26 +174,6 @@ class TestUtil(unittest.TestCase):
         self.assertEqual(sanitize_path('../../abc'), '..\\..\\abc')
         self.assertEqual(sanitize_path('./abc'), 'abc')
         self.assertEqual(sanitize_path('./../abc'), '..\\abc')
-
-    def test_sanitize_url_path_consecutive_slashes(self):
-        self.assertEqual(
-            sanitize_url_path_consecutive_slashes('http://hostname/foo//bar/filename.html'),
-            'http://hostname/foo/bar/filename.html')
-        self.assertEqual(
-            sanitize_url_path_consecutive_slashes('http://hostname//foo/bar/filename.html'),
-            'http://hostname/foo/bar/filename.html')
-        self.assertEqual(
-            sanitize_url_path_consecutive_slashes('http://hostname//'),
-            'http://hostname/')
-        self.assertEqual(
-            sanitize_url_path_consecutive_slashes('http://hostname/foo/bar/filename.html'),
-            'http://hostname/foo/bar/filename.html')
-        self.assertEqual(
-            sanitize_url_path_consecutive_slashes('http://hostname/'),
-            'http://hostname/')
-        self.assertEqual(
-            sanitize_url_path_consecutive_slashes('http://hostname/abc//'),
-            'http://hostname/abc/')
 
     def test_prepend_extension(self):
         self.assertEqual(prepend_extension('abc.ext', 'temp'), 'abc.temp.ext')
@@ -621,7 +600,7 @@ ffmpeg version 2.4.4 Copyright (c) 2000-2014 the FFmpeg ...'''), '2.4.4')
                 <div xml:lang="en">
                     <p begin="0" end="1">The following line contains Chinese characters and special symbols</p>
                     <p begin="1" end="2">第二行<br/>♪♪</p>
-                    <p begin="2" end="3"><span>Third<br/>Line</span></p>
+                    <p begin="2" dur="1"><span>Third<br/>Line</span></p>
                 </div>
             </body>
             </tt>'''

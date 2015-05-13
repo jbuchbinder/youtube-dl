@@ -258,7 +258,10 @@ from .letv import (
     LetvPlaylistIE
 )
 from .libsyn import LibsynIE
-from .lifenews import LifeNewsIE
+from .lifenews import (
+    LifeNewsIE,
+    LifeEmbedIE,
+)
 from .liveleak import LiveLeakIE
 from .livestream import (
     LivestreamIE,
@@ -321,7 +324,10 @@ from .nbc import (
     NBCSportsIE,
     NBCSportsVPlayerIE,
 )
-from .ndr import NDRIE
+from .ndr import (
+    NDRIE,
+    NJoyIE,
+)
 from .ndtv import NDTVIE
 from .netzkino import NetzkinoIE
 from .nerdcubed import NerdCubedFeedIE
@@ -483,8 +489,9 @@ from .soundgasm import (
 )
 from .southpark import (
     SouthParkIE,
-    SouthParkEsIE,
     SouthParkDeIE,
+    SouthParkDkIE,
+    SouthParkEsIE,
     SouthParkNlIE
 )
 from .space import SpaceIE
@@ -505,7 +512,10 @@ from .streamcloud import StreamcloudIE
 from .streamcz import StreamCZIE
 from .streetvoice import StreetVoiceIE
 from .sunporno import SunPornoIE
-from .svtplay import SVTPlayIE
+from .svt import (
+    SVTIE,
+    SVTPlayIE,
+)
 from .swrmediathek import SWRMediathekIE
 from .syfy import SyfyIE
 from .sztvhu import SztvHuIE
@@ -534,7 +544,10 @@ from .thesixtyone import TheSixtyOneIE
 from .thisav import ThisAVIE
 from .tinypic import TinyPicIE
 from .tlc import TlcIE, TlcDeIE
-from .tmz import TMZIE
+from .tmz import (
+    TMZIE,
+    TMZArticleIE,
+)
 from .tnaflix import TNAFlixIE
 from .thvideo import (
     THVideoIE,
@@ -587,7 +600,11 @@ from .veoh import VeohIE
 from .vessel import VesselIE
 from .vesti import VestiIE
 from .vevo import VevoIE
-from .vgtv import VGTVIE
+from .vgtv import (
+    BTArticleIE,
+    BTVestlendingenIE,
+    VGTVIE,
+)
 from .vh1 import VH1IE
 from .vice import ViceIE
 from .viddler import ViddlerIE
@@ -624,6 +641,7 @@ from .vk import (
     VKUserVideosIE,
 )
 from .vodlocker import VodlockerIE
+from .voicerepublic import VoiceRepublicIE
 from .vporn import VpornIE
 from .vrt import VRTIE
 from .vube import VubeIE
@@ -650,9 +668,10 @@ from .xboxclips import XboxClipsIE
 from .xhamster import XHamsterIE
 from .xminus import XMinusIE
 from .xnxx import XNXXIE
-from .xvideos import XVideosIE
+from .xstream import XstreamIE
 from .xtube import XTubeUserIE, XTubeIE
 from .xuite import XuiteIE
+from .xvideos import XVideosIE
 from .xxxymovies import XXXYMoviesIE
 from .yahoo import (
     YahooIE,
