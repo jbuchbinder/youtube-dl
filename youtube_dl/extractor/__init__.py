@@ -414,6 +414,7 @@ from .qqmusic import (
     QQMusicIE,
     QQMusicSingerIE,
     QQMusicAlbumIE,
+    QQMusicToplistIE,
 )
 from .quickvid import QuickVidIE
 from .r7 import R7IE
@@ -501,7 +502,10 @@ from .spiegel import SpiegelIE, SpiegelArticleIE
 from .spiegeltv import SpiegeltvIE
 from .spike import SpikeIE
 from .sport5 import Sport5IE
-from .sportbox import SportBoxIE
+from .sportbox import (
+    SportBoxIE,
+    SportBoxEmbedIE,
+)
 from .sportdeutschland import SportDeutschlandIE
 from .srf import SrfIE
 from .srmediathek import SRMediathekIE

@@ -759,7 +759,9 @@ class YoutubeDL(object):
             if isinstance(ie_entries, list):
                 n_all_entries = len(ie_entries)
                 if playlistitems:
-                    entries = [ie_entries[i - 1] for i in playlistitems]
+                    entries = [
+                        ie_entries[i - 1] for i in playlistitems
+                        if -n_all_entries <= i - 1 < n_all_entries]
                 else:
                     entries = ie_entries[playliststart:playlistend]
                 n_entries = len(entries)
@@ -1085,10 +1087,11 @@ class YoutubeDL(object):
         req_format = self.params.get('format')
         if req_format is None:
             req_format_list = []
-            if (self.params.get('outtmpl', DEFAULT_OUTTMPL) != '-'
-                    and info_dict['extractor'] in ['youtube', 'ted']
-                    and FFmpegMergerPP(self).available):
-                req_format_list.append('bestvideo+bestaudio')
+            if (self.params.get('outtmpl', DEFAULT_OUTTMPL) != '-' and
+                    info_dict['extractor'] in ['youtube', 'ted']):
+                merger = FFmpegMergerPP(self)
+                if merger.available and merger.can_merge():
+                    req_format_list.append('bestvideo+bestaudio')
             req_format_list.append('best')
             req_format = '/'.join(req_format_list)
         formats_to_download = []
@@ -1848,7 +1851,7 @@ class YoutubeDL(object):
             thumb_ext = determine_ext(t['url'], 'jpg')
             suffix = '_%s' % t['id'] if len(thumbnails) > 1 else ''
             thumb_display_id = '%s ' % t['id'] if len(thumbnails) > 1 else ''
-            thumb_filename = os.path.splitext(filename)[0] + suffix + '.' + thumb_ext
+            t['filename'] = thumb_filename = os.path.splitext(filename)[0] + suffix + '.' + thumb_ext
 
             if self.params.get('nooverwrites', False) and os.path.exists(encodeFilename(thumb_filename)):
                 self.to_screen('[%s] %s: Thumbnail %sis already present' %
