@@ -141,6 +141,7 @@ from .engadget import EngadgetIE
 from .eporner import EpornerIE
 from .eroprofile import EroProfileIE
 from .escapist import EscapistIE
+from .espn import ESPNIE
 from .everyonesmixtape import EveryonesMixtapeIE
 from .exfm import ExfmIE
 from .expotv import ExpoTVIE
@@ -376,7 +377,10 @@ from .nytimes import (
 from .nuvid import NuvidIE
 from .odnoklassniki import OdnoklassnikiIE
 from .oktoberfesttv import OktoberfestTVIE
-from .ooyala import OoyalaIE
+from .ooyala import (
+    OoyalaIE,
+    OoyalaExternalIE,
+)
 from .openfilm import OpenFilmIE
 from .orf import (
     ORFTVthekIE,
@@ -568,6 +572,10 @@ from .tumblr import TumblrIE
 from .tunein import TuneInIE
 from .turbo import TurboIE
 from .tutv import TutvIE
+from .tv2 import (
+    TV2IE,
+    TV2ArticleIE,
+)
 from .tv4 import TV4IE
 from .tvigle import TvigleIE
 from .tvp import TvpIE, TvpSeriesIE
@@ -639,7 +647,10 @@ from .vine import (
     VineIE,
     VineUserIE,
 )
-from .viki import VikiIE
+from .viki import (
+    VikiIE,
+    VikiChannelIE,
+)
 from .vk import (
     VKIE,
     VKUserVideosIE,
