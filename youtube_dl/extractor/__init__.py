@@ -149,7 +149,6 @@ from .extremetube import ExtremeTubeIE
 from .facebook import FacebookIE
 from .faz import FazIE
 from .fc2 import FC2IE
-from .firedrive import FiredriveIE
 from .firstpost import FirstpostIE
 from .firsttv import FirstTVIE
 from .fivemin import FiveMinIE
@@ -244,6 +243,7 @@ from .kaltura import KalturaIE
 from .kanalplay import KanalPlayIE
 from .kankan import KankanIE
 from .karaoketv import KaraoketvIE
+from .karrierevideos import KarriereVideosIE
 from .keezmovies import KeezMoviesIE
 from .khanacademy import KhanAcademyIE
 from .kickstarter import KickStarterIE
@@ -338,8 +338,7 @@ from .newstube import NewstubeIE
 from .nextmedia import (
     NextMediaIE,
     NextMediaActionNewsIE,
-    AppleDailyRealtimeNewsIE,
-    AppleDailyAnimationNewsIE
+    AppleDailyIE,
 )
 from .nfb import NFBIE
 from .nfl import NFLIE
@@ -355,6 +354,7 @@ from .normalboots import NormalbootsIE
 from .nosvideo import NosVideoIE
 from .novamov import NovaMovIE
 from .nowness import NownessIE
+from .nowtv import NowTVIE
 from .nowvideo import NowVideoIE
 from .npo import (
     NPOIE,
@@ -438,7 +438,6 @@ from .roxwel import RoxwelIE
 from .rtbf import RTBFIE
 from .rte import RteIE
 from .rtlnl import RtlNlIE
-from .rtlnow import RTLnowIE
 from .rtl2 import RTL2IE
 from .rtp import RTPIE
 from .rts import RTSIE
@@ -480,7 +479,6 @@ from .smotri import (
     SmotriBroadcastIE,
 )
 from .snotr import SnotrIE
-from .sockshare import SockshareIE
 from .sohu import SohuIE
 from .soundcloud import (
     SoundcloudIE,
