@@ -49,6 +49,7 @@ from .utils import (
     ExtractorError,
     format_bytes,
     formatSeconds,
+    HEADRequest,
     locked_file,
     make_HTTPS_handler,
     MaxDownloadsReached,
@@ -923,8 +924,9 @@ class YoutubeDL(object):
                 if f.get('vcodec') != 'none' and f.get('acodec') != 'none']
             if audiovideo_formats:
                 return audiovideo_formats[format_idx]
-            # for audio only urls, select the best/worst audio format
-            elif all(f.get('acodec') != 'none' for f in available_formats):
+            # for audio only (soundcloud) or video only (imgur) urls, select the best/worst audio format
+            elif (all(f.get('acodec') != 'none' for f in available_formats) or
+                  all(f.get('vcodec') != 'none' for f in available_formats)):
                 return available_formats[format_idx]
         elif format_spec == 'bestaudio':
             audio_formats = [
@@ -1047,6 +1049,8 @@ class YoutubeDL(object):
         if not formats:
             raise ExtractorError('No video formats found!')
 
+        formats_dict = {}
+
         # We check that all the formats have the format and format_id fields
         for i, format in enumerate(formats):
             if 'url' not in format:
@@ -1054,6 +1058,18 @@ class YoutubeDL(object):
 
             if format.get('format_id') is None:
                 format['format_id'] = compat_str(i)
+            format_id = format['format_id']
+            if format_id not in formats_dict:
+                formats_dict[format_id] = []
+            formats_dict[format_id].append(format)
+
+        # Make sure all formats have unique format_id
+        for format_id, ambiguous_formats in formats_dict.items():
+            if len(ambiguous_formats) > 1:
+                for i, format in enumerate(ambiguous_formats):
+                    format['format_id'] = '%s-%d' % (format_id, i)
+
+        for i, format in enumerate(formats):
             if format.get('format') is None:
                 format['format'] = '{id} - {res}{note}'.format(
                     id=format['format_id'],
@@ -1706,7 +1722,8 @@ class YoutubeDL(object):
             if req_is_string:
                 req = url_escaped
             else:
-                req = compat_urllib_request.Request(
+                req_type = HEADRequest if req.get_method() == 'HEAD' else compat_urllib_request.Request
+                req = req_type(
                     url_escaped, data=req.data, headers=req.headers,
                     origin_req_host=req.origin_req_host, unverifiable=req.unverifiable)
 

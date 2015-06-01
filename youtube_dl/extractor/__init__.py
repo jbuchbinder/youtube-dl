@@ -401,6 +401,7 @@ from .playfm import PlayFMIE
 from .playvid import PlayvidIE
 from .playwire import PlaywireIE
 from .podomatic import PodomaticIE
+from .porn91 import Porn91IE
 from .pornhd import PornHdIE
 from .pornhub import (
     PornHubIE,
@@ -480,6 +481,10 @@ from .smotri import (
 )
 from .snotr import SnotrIE
 from .sohu import SohuIE
+from .soompi import (
+    SoompiIE,
+    SoompiShowIE,
+)
 from .soundcloud import (
     SoundcloudIE,
     SoundcloudSetIE,
@@ -565,6 +570,7 @@ from .traileraddict import TrailerAddictIE
 from .trilulilu import TriluliluIE
 from .trutube import TruTubeIE
 from .tube8 import Tube8IE
+from .tubitv import TubiTvIE
 from .tudou import TudouIE
 from .tumblr import TumblrIE
 from .tunein import TuneInIE
