@@ -785,7 +785,7 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
             s = mobj.group(1)
             dec_s = self._decrypt_signature(s, video_id, player_url, age_gate)
             return '/signature/%s' % dec_s
-        dash_manifest_url = re.sub(r'/s/([\w\.]+)', decrypt_sig, dash_manifest_url)
+        dash_manifest_url = re.sub(r'/s/([a-fA-F0-9\.]+)', decrypt_sig, dash_manifest_url)
         dash_doc = self._download_xml(
             dash_manifest_url, video_id,
             note='Downloading DASH manifest',
@@ -1290,7 +1290,6 @@ class YoutubePlaylistIE(YoutubeBaseInfoExtractor):
     def _extract_playlist(self, playlist_id):
         url = self._TEMPLATE_URL % playlist_id
         page = self._download_webpage(url, playlist_id)
-        more_widget_html = content_html = page
 
         for match in re.findall(r'<div class="yt-alert-message">([^<]+)</div>', page):
             match = match.strip()
@@ -1310,36 +1309,36 @@ class YoutubePlaylistIE(YoutubeBaseInfoExtractor):
                 self.report_warning('Youtube gives an alert message: ' + match)
 
         # Extract the video ids from the playlist pages
-        ids = []
+        def _entries():
+            more_widget_html = content_html = page
+            for page_num in itertools.count(1):
+                matches = re.finditer(self._VIDEO_RE, content_html)
+                # We remove the duplicates and the link with index 0
+                # (it's not the first video of the playlist)
+                new_ids = orderedSet(m.group('id') for m in matches if m.group('index') != '0')
+                for vid_id in new_ids:
+                    yield self.url_result(vid_id, 'Youtube', video_id=vid_id)
 
-        for page_num in itertools.count(1):
-            matches = re.finditer(self._VIDEO_RE, content_html)
-            # We remove the duplicates and the link with index 0
-            # (it's not the first video of the playlist)
-            new_ids = orderedSet(m.group('id') for m in matches if m.group('index') != '0')
-            ids.extend(new_ids)
+                mobj = re.search(r'data-uix-load-more-href="/?(?P<more>[^"]+)"', more_widget_html)
+                if not mobj:
+                    break
 
-            mobj = re.search(r'data-uix-load-more-href="/?(?P<more>[^"]+)"', more_widget_html)
-            if not mobj:
-                break
-
-            more = self._download_json(
-                'https://youtube.com/%s' % mobj.group('more'), playlist_id,
-                'Downloading page #%s' % page_num,
-                transform_source=uppercase_escape)
-            content_html = more['content_html']
-            if not content_html.strip():
-                # Some webpages show a "Load more" button but they don't
-                # have more videos
-                break
-            more_widget_html = more['load_more_widget_html']
+                more = self._download_json(
+                    'https://youtube.com/%s' % mobj.group('more'), playlist_id,
+                    'Downloading page #%s' % page_num,
+                    transform_source=uppercase_escape)
+                content_html = more['content_html']
+                if not content_html.strip():
+                    # Some webpages show a "Load more" button but they don't
+                    # have more videos
+                    break
+                more_widget_html = more['load_more_widget_html']
 
         playlist_title = self._html_search_regex(
             r'(?s)<h1 class="pl-header-title[^"]*">\s*(.*?)\s*</h1>',
             page, 'title')
 
-        url_results = self._ids_to_results(ids)
-        return self.playlist_result(url_results, playlist_id, playlist_title)
+        return self.playlist_result(_entries(), playlist_id, playlist_title)
 
     def _real_extract(self, url):
         # Extract playlist id
@@ -1406,10 +1405,12 @@ class YoutubeChannelIE(InfoExtractor):
         channel_page = self._download_webpage(
             url + '?view=57', channel_id,
             'Downloading channel page', fatal=False)
-        channel_playlist_id = self._search_regex(
-            [r'<meta itemprop="channelId" content="([^"]+)">',
-             r'data-channel-external-id="([^"]+)"'],
-            channel_page, 'channel id', default=None)
+        channel_playlist_id = self._html_search_meta(
+            'channelId', channel_page, 'channel id', default=None)
+        if not channel_playlist_id:
+            channel_playlist_id = self._search_regex(
+                r'data-channel-external-id="([^"]+)"',
+                channel_page, 'channel id', default=None)
         if channel_playlist_id and channel_playlist_id.startswith('UC'):
             playlist_id = 'UU' + channel_playlist_id[2:]
             return self.url_result(
