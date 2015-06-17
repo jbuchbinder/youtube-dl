@@ -112,6 +112,10 @@ from .dfb import DFBIE
 from .dhm import DHMIE
 from .dotsub import DotsubIE
 from .douyutv import DouyuTVIE
+from .dramafever import (
+    DramaFeverIE,
+    DramaFeverSeriesIE,
+)
 from .dreisat import DreiSatIE
 from .drbonanza import DRBonanzaIE
 from .drtuber import DrTuberIE
@@ -152,6 +156,7 @@ from .fc2 import FC2IE
 from .firstpost import FirstpostIE
 from .firsttv import FirstTVIE
 from .fivemin import FiveMinIE
+from .fivetv import FiveTVIE
 from .fktv import (
     FKTVIE,
     FKTVPosteckeIE,
@@ -584,6 +589,10 @@ from .tv2 import (
     TV2ArticleIE,
 )
 from .tv4 import TV4IE
+from .tvc import (
+    TVCIE,
+    TVCArticleIE,
+)
 from .tvigle import TvigleIE
 from .tvp import TvpIE, TvpSeriesIE
 from .tvplay import TVPlayIE

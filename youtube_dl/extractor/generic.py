@@ -34,6 +34,7 @@ from .brightcove import BrightcoveIE
 from .nbc import NBCSportsVPlayerIE
 from .ooyala import OoyalaIE
 from .rutv import RUTVIE
+from .tvc import TVCIE
 from .sportbox import SportBoxEmbedIE
 from .smotri import SmotriIE
 from .condenast import CondeNastIE
@@ -41,6 +42,7 @@ from .udn import UDNEmbedIE
 from .senateisvp import SenateISVPIE
 from .bliptv import BlipTVIE
 from .svt import SVTIE
+from .pornhub import PornHubIE
 
 
 class GenericIE(InfoExtractor):
@@ -289,6 +291,15 @@ class GenericIE(InfoExtractor):
             'params': {
                 # m3u8 download
                 'skip_download': True,
+            },
+        },
+        # TVC embed
+        {
+            'url': 'http://sch1298sz.mskobr.ru/dou_edu/karamel_ki/filial_galleries/video/iframe_src_http_tvc_ru_video_iframe_id_55304_isplay_false_acc_video_id_channel_brand_id_11_show_episodes_episode_id_32307_frameb/',
+            'info_dict': {
+                'id': '55304',
+                'ext': 'mp4',
+                'title': 'Дошкольное воспитание',
             },
         },
         # SportBox embed
@@ -1073,7 +1084,7 @@ class GenericIE(InfoExtractor):
 
         # Look for embedded rtl.nl player
         matches = re.findall(
-            r'<iframe\s+(?:[a-zA-Z-]+="[^"]+"\s+)*?src="((?:https?:)?//(?:www\.)?rtl\.nl/system/videoplayer/[^"]+video_embed[^"]+)"',
+            r'<iframe[^>]+?src="((?:https?:)?//(?:www\.)?rtl\.nl/system/videoplayer/[^"]+(?:video_)?embed[^"]+)"',
             webpage)
         if matches:
             return _playlist_from_matches(matches, ie='RtlNl')
@@ -1301,10 +1312,26 @@ class GenericIE(InfoExtractor):
         if rutv_url:
             return self.url_result(rutv_url, 'RUTV')
 
+        # Look for embedded TVC player
+        tvc_url = TVCIE._extract_url(webpage)
+        if tvc_url:
+            return self.url_result(tvc_url, 'TVC')
+
         # Look for embedded SportBox player
         sportbox_urls = SportBoxEmbedIE._extract_urls(webpage)
         if sportbox_urls:
             return _playlist_from_matches(sportbox_urls, ie='SportBoxEmbed')
+
+        # Look for embedded PornHub player
+        pornhub_url = PornHubIE._extract_url(webpage)
+        if pornhub_url:
+            return self.url_result(pornhub_url, 'PornHub')
+
+        # Look for embedded Tvigle player
+        mobj = re.search(
+            r'<iframe[^>]+?src=(["\'])(?P<url>(?:https?:)?//cloud\.tvigle\.ru/video/.+?)\1', webpage)
+        if mobj is not None:
+            return self.url_result(mobj.group('url'), 'Tvigle')
 
         # Look for embedded TED player
         mobj = re.search(
