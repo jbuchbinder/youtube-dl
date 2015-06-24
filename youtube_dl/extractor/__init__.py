@@ -106,6 +106,7 @@ from .dailymotion import (
     DailymotionIE,
     DailymotionPlaylistIE,
     DailymotionUserIE,
+    DailymotionCloudIE,
 )
 from .daum import DaumIE
 from .dbtv import DBTVIE
@@ -700,7 +701,10 @@ from .wrzuta import WrzutaIE
 from .wsj import WSJIE
 from .xbef import XBefIE
 from .xboxclips import XboxClipsIE
-from .xhamster import XHamsterIE
+from .xhamster import (
+    XHamsterIE,
+    XHamsterEmbedIE,
+)
 from .xminus import XMinusIE
 from .xnxx import XNXXIE
 from .xstream import XstreamIE
