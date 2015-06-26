@@ -46,6 +46,7 @@ from .pornhub import PornHubIE
 from .xhamster import XHamsterEmbedIE
 from .vimeo import VimeoIE
 from .dailymotion import DailymotionCloudIE
+from .onionstudios import OnionStudiosIE
 
 
 class GenericIE(InfoExtractor):
@@ -836,6 +837,18 @@ class GenericIE(InfoExtractor):
                 'thumbnail': 're:^https?://.*\.jpe?g$',
             }
         },
+        # OnionStudios embed
+        {
+            'url': 'http://www.clickhole.com/video/dont-understand-bitcoin-man-will-mumble-explanatio-2537',
+            'info_dict': {
+                'id': '2855',
+                'ext': 'mp4',
+                'title': 'Don’t Understand Bitcoin? This Man Will Mumble An Explanation At You',
+                'thumbnail': 're:^https?://.*\.jpe?g$',
+                'uploader': 'ClickHole',
+                'uploader_id': 'clickhole',
+            }
+        },
         # AdobeTVVideo embed
         {
             'url': 'https://helpx.adobe.com/acrobat/how-to/new-experience-acrobat-dc.html?set=acrobat--get-started--essential-beginners',
@@ -1014,7 +1027,9 @@ class GenericIE(InfoExtractor):
             }
 
         if not self._downloader.params.get('test', False) and not is_intentional:
-            self._downloader.report_warning('Falling back on generic information extractor.')
+            force = self._downloader.params.get('force_generic_extractor', False)
+            self._downloader.report_warning(
+                '%s on generic information extractor.' % ('Forcing' if force else 'Falling back'))
 
         if not full_response:
             request = compat_urllib_request.Request(url)
@@ -1529,6 +1544,11 @@ class GenericIE(InfoExtractor):
         dmcloud_url = DailymotionCloudIE._extract_dmcloud_url(webpage)
         if dmcloud_url:
             return self.url_result(dmcloud_url, 'DailymotionCloud')
+
+        # Look for OnionStudios embeds
+        onionstudios_url = OnionStudiosIE._extract_url(webpage)
+        if onionstudios_url:
+            return self.url_result(onionstudios_url)
 
         # Look for AdobeTVVideo embeds
         mobj = re.search(
