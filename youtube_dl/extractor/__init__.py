@@ -144,7 +144,6 @@ from .ellentv import (
 )
 from .elpais import ElPaisIE
 from .embedly import EmbedlyIE
-from .empflix import EMPFlixIE
 from .engadget import EngadgetIE
 from .eporner import EpornerIE
 from .eroprofile import EroProfileIE
@@ -493,6 +492,10 @@ from .smotri import (
     SmotriUserIE,
     SmotriBroadcastIE,
 )
+from .snagfilms import (
+    SnagFilmsIE,
+    SnagFilmsEmbedIE,
+)
 from .snotr import SnotrIE
 from .sohu import SohuIE
 from .soompi import (
@@ -573,7 +576,11 @@ from .tmz import (
     TMZIE,
     TMZArticleIE,
 )
-from .tnaflix import TNAFlixIE
+from .tnaflix import (
+    TNAFlixIE,
+    EMPFlixIE,
+    MovieFapIE,
+)
 from .thvideo import (
     THVideoIE,
     THVideoPlaylistIE
@@ -617,6 +624,7 @@ from .twitch import (
     TwitchBookmarksIE,
     TwitchStreamIE,
 )
+from .twitter import TwitterCardIE
 from .ubu import UbuIE
 from .udemy import (
     UdemyIE,

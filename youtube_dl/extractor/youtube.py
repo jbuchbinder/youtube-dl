@@ -29,9 +29,11 @@ from ..utils import (
     get_element_by_id,
     int_or_none,
     orderedSet,
+    str_to_int,
     unescapeHTML,
     unified_strdate,
     uppercase_escape,
+    ISO3166Utils,
 )
 
 
@@ -903,6 +905,12 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
                         break
         if 'token' not in video_info:
             if 'reason' in video_info:
+                if 'The uploader has not made this video available in your country.' in video_info['reason']:
+                    regions_allowed = self._html_search_meta('regionsAllowed', video_webpage, default=None)
+                    if regions_allowed is not None:
+                        raise ExtractorError('YouTube said: This video is available in %s only' % (
+                            ', '.join(map(ISO3166Utils.short2full, regions_allowed.split(',')))),
+                            expected=True)
                 raise ExtractorError(
                     'YouTube said: %s' % video_info['reason'][0],
                     expected=True, video_id=video_id)
@@ -998,12 +1006,11 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
                 video_description = ''
 
         def _extract_count(count_name):
-            count = self._search_regex(
-                r'id="watch-%s"[^>]*>.*?([\d,]+)\s*</span>' % re.escape(count_name),
-                video_webpage, count_name, default=None)
-            if count is not None:
-                return int(count.replace(',', ''))
-            return None
+            return str_to_int(self._search_regex(
+                r'-%s-button[^>]+><span[^>]+class="yt-uix-button-content"[^>]*>([\d,]+)</span>'
+                % re.escape(count_name),
+                video_webpage, count_name, default=None))
+
         like_count = _extract_count('like')
         dislike_count = _extract_count('dislike')
 
