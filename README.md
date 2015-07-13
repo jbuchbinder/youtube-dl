@@ -108,7 +108,7 @@ which means you can modify it, redistribute it or use it however you like.
     --playlist-reverse               Download playlist videos in reverse order
     --xattr-set-filesize             Set file xattribute ytdl.filesize with expected filesize (experimental)
     --hls-prefer-native              Use the native HLS downloader instead of ffmpeg (experimental)
-    --external-downloader COMMAND    Use the specified external downloader. Currently supports aria2c,curl,wget
+    --external-downloader COMMAND    Use the specified external downloader. Currently supports aria2c,curl,httpie,wget
     --external-downloader-args ARGS  Give these arguments to the external downloader
 
 ## Filesystem Options:
@@ -190,8 +190,8 @@ which means you can modify it, redistribute it or use it however you like.
     --all-formats                    Download all available video formats
     --prefer-free-formats            Prefer free video formats unless a specific one is requested
     -F, --list-formats               List all available formats
-    --youtube-skip-dash-manifest     Do not download the DASH manifest on YouTube videos
-    --merge-output-format FORMAT     If a merge is required (e.g. bestvideo+bestaudio), output to given container format. One of mkv, mp4, ogg, webm, flv.Ignored if no
+    --youtube-skip-dash-manifest     Do not download the DASH manifests and related data on YouTube videos
+    --merge-output-format FORMAT     If a merge is required (e.g. bestvideo+bestaudio), output to given container format. One of mkv, mp4, ogg, webm, flv. Ignored if no
                                      merge is required
 
 ## Subtitle Options:
@@ -214,7 +214,8 @@ which means you can modify it, redistribute it or use it however you like.
     --audio-format FORMAT            Specify audio format: "best", "aac", "vorbis", "mp3", "m4a", "opus", or "wav"; "best" by default
     --audio-quality QUALITY          Specify ffmpeg/avconv audio quality, insert a value between 0 (better) and 9 (worse) for VBR or a specific bitrate like 128K (default
                                      5)
-    --recode-video FORMAT            Encode the video to another format if necessary (currently supported: mp4|flv|ogg|webm|mkv)
+    --recode-video FORMAT            Encode the video to another format if necessary (currently supported: mp4|flv|ogg|webm|mkv|avi)
+    --postprocessor-args ARGS        Give these arguments to the postprocessor
     -k, --keep-video                 Keep the video file on disk after the post-processing; the video is erased by default
     --no-post-overwrites             Do not overwrite post-processed files; the post-processed files are overwritten by default
     --embed-subs                     Embed subtitles in the video (only for mkv and mp4 videos)

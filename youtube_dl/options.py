@@ -346,7 +346,7 @@ def parseOpts(overrideArguments=None):
     video_format.add_option(
         '--youtube-skip-dash-manifest',
         action='store_false', dest='youtube_include_dash_manifest',
-        help='Do not download the DASH manifest on YouTube videos')
+        help='Do not download the DASH manifests and related data on YouTube videos')
     video_format.add_option(
         '--merge-output-format',
         action='store', dest='merge_output_format', metavar='FORMAT', default=None,
@@ -691,7 +691,11 @@ def parseOpts(overrideArguments=None):
     postproc.add_option(
         '--recode-video',
         metavar='FORMAT', dest='recodevideo', default=None,
-        help='Encode the video to another format if necessary (currently supported: mp4|flv|ogg|webm|mkv)')
+        help='Encode the video to another format if necessary (currently supported: mp4|flv|ogg|webm|mkv|avi)')
+    postproc.add_option(
+        '--postprocessor-args',
+        dest='postprocessor_args', metavar='ARGS',
+        help='Give these arguments to the postprocessor')
     postproc.add_option(
         '-k', '--keep-video',
         action='store_true', dest='keepvideo', default=False,

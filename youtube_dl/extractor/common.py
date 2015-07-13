@@ -705,6 +705,12 @@ class InfoExtractor(object):
         return self._html_search_meta('twitter:player', html,
                                       'twitter card player')
 
+    @staticmethod
+    def _form_hidden_inputs(html):
+        return dict(re.findall(
+            r'<input\s+type="hidden"\s+name="([^"]+)"\s+(?:id="[^"]+"\s+)?value="([^"]*)"',
+            html))
+
     def _sort_formats(self, formats, field_preference=None):
         if not formats:
             raise ExtractorError('No video formats found')
@@ -846,7 +852,8 @@ class InfoExtractor(object):
 
     def _extract_m3u8_formats(self, m3u8_url, video_id, ext=None,
                               entry_protocol='m3u8', preference=None,
-                              m3u8_id=None, note=None, errnote=None):
+                              m3u8_id=None, note=None, errnote=None,
+                              fatal=True):
 
         formats = [{
             'format_id': '-'.join(filter(None, [m3u8_id, 'meta'])),
@@ -866,7 +873,10 @@ class InfoExtractor(object):
         m3u8_doc = self._download_webpage(
             m3u8_url, video_id,
             note=note or 'Downloading m3u8 information',
-            errnote=errnote or 'Failed to download m3u8 information')
+            errnote=errnote or 'Failed to download m3u8 information',
+            fatal=fatal)
+        if m3u8_doc is False:
+            return m3u8_doc
         last_info = None
         last_media = None
         kv_rex = re.compile(

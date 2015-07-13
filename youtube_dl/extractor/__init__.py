@@ -260,6 +260,14 @@ from .keek import KeekIE
 from .kontrtube import KontrTubeIE
 from .krasview import KrasViewIE
 from .ku6 import Ku6IE
+from .kuwo import (
+    KuwoIE,
+    KuwoAlbumIE,
+    KuwoChartIE,
+    KuwoSingerIE,
+    KuwoCategoryIE,
+    KuwoMvIE,
+)
 from .la7 import LA7IE
 from .laola1tv import Laola1TvIE
 from .letv import (
@@ -323,6 +331,7 @@ from .musicvault import MusicVaultIE
 from .muzu import MuzuTVIE
 from .myspace import MySpaceIE, MySpaceAlbumIE
 from .myspass import MySpassIE
+from .myvi import MyviIE
 from .myvideo import MyVideoIE
 from .myvidster import MyVidsterIE
 from .nationalgeographic import NationalGeographicIE
@@ -342,6 +351,15 @@ from .ndtv import NDTVIE
 from .netzkino import NetzkinoIE
 from .nerdcubed import NerdCubedFeedIE
 from .nerdist import NerdistIE
+from .neteasemusic import (
+    NetEaseMusicIE,
+    NetEaseMusicAlbumIE,
+    NetEaseMusicSingerIE,
+    NetEaseMusicListIE,
+    NetEaseMusicMvIE,
+    NetEaseMusicProgramIE,
+    NetEaseMusicDjRadioIE,
+)
 from .newgrounds import NewgroundsIE
 from .newstube import NewstubeIE
 from .nextmedia import (
@@ -432,6 +450,7 @@ from .qqmusic import (
     QQMusicSingerIE,
     QQMusicAlbumIE,
     QQMusicToplistIE,
+    QQMusicPlaylistIE,
 )
 from .quickvid import QuickVidIE
 from .r7 import R7IE
@@ -441,6 +460,7 @@ from .radiobremen import RadioBremenIE
 from .radiofrance import RadioFranceIE
 from .rai import RaiIE
 from .rbmaradio import RBMARadioIE
+from .rds import RDSIE
 from .redtube import RedTubeIE
 from .restudy import RestudyIE
 from .reverbnation import ReverbNationIE
@@ -569,6 +589,7 @@ from .tf1 import TF1IE
 from .theonion import TheOnionIE
 from .theplatform import ThePlatformIE
 from .thesixtyone import TheSixtyOneIE
+from .thisamericanlife import ThisAmericanLifeIE
 from .thisav import ThisAVIE
 from .tinypic import TinyPicIE
 from .tlc import TlcIE, TlcDeIE
@@ -701,7 +722,10 @@ from .wdr import (
     WDRMobileIE,
     WDRMausIE,
 )
-from .webofstories import WebOfStoriesIE
+from .webofstories import (
+    WebOfStoriesIE,
+    WebOfStoriesPlaylistIE,
+)
 from .weibo import WeiboIE
 from .wimp import WimpIE
 from .wistia import WistiaIE
@@ -732,6 +756,7 @@ from .yandexmusic import (
     YandexMusicPlaylistIE,
 )
 from .yesjapan import YesJapanIE
+from .yinyuetai import YinYueTaiIE
 from .ynet import YnetIE
 from .youjizz import YouJizzIE
 from .youku import YoukuIE
