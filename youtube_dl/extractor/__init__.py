@@ -19,9 +19,14 @@ from .anysex import AnySexIE
 from .aol import AolIE
 from .allocine import AllocineIE
 from .aparat import AparatIE
+from .appleconnect import AppleConnectIE
 from .appletrailers import AppleTrailersIE
 from .archiveorg import ArchiveOrgIE
-from .ard import ARDIE, ARDMediathekIE
+from .ard import (
+    ARDIE,
+    ARDMediathekIE,
+    SportschauIE,
+)
 from .arte import (
     ArteTvIE,
     ArteTVPlus7IE,
@@ -38,7 +43,10 @@ from .azubu import AzubuIE
 from .baidu import BaiduVideoIE
 from .bambuser import BambuserIE, BambuserChannelIE
 from .bandcamp import BandcampIE, BandcampAlbumIE
-from .bbccouk import BBCCoUkIE
+from .bbc import (
+    BBCCoUkIE,
+    BBCIE,
+)
 from .beeg import BeegIE
 from .behindkink import BehindKinkIE
 from .beatportpro import BeatportProIE
@@ -238,6 +246,7 @@ from .instagram import InstagramIE, InstagramUserIE
 from .internetvideoarchive import InternetVideoArchiveIE
 from .iprima import IPrimaIE
 from .iqiyi import IqiyiIE
+from .ir90tv import Ir90TvIE
 from .ivi import (
     IviIE,
     IviCompilationIE
@@ -270,6 +279,7 @@ from .kuwo import (
 )
 from .la7 import LA7IE
 from .laola1tv import Laola1TvIE
+from .lecture2go import Lecture2GoIE
 from .letv import (
     LetvIE,
     LetvTvIE,
@@ -389,7 +399,8 @@ from .npo import (
     NPOLiveIE,
     NPORadioIE,
     NPORadioFragmentIE,
-    TegenlichtVproIE,
+    VPROIE,
+    WNLIE
 )
 from .nrk import (
     NRKIE,

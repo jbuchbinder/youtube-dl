@@ -20,7 +20,8 @@ from ..utils import (
 
 
 class VKIE(InfoExtractor):
-    IE_NAME = 'vk.com'
+    IE_NAME = 'vk'
+    IE_DESC = 'VK'
     _VALID_URL = r'''(?x)
                     https?://
                         (?:
@@ -154,6 +155,11 @@ class VKIE(InfoExtractor):
             'only_matching': True,
         },
         {
+            # age restricted video, requires vk account credentials
+            'url': 'https://vk.com/video205387401_164765225',
+            'only_matching': True,
+        },
+        {
             # vk wrapper
             'url': 'http://www.biqle.ru/watch/847655_160197695',
             'only_matching': True,
@@ -168,7 +174,7 @@ class VKIE(InfoExtractor):
         login_page = self._download_webpage(
             'https://vk.com', None, 'Downloading login page')
 
-        login_form = self._form_hidden_inputs(login_page)
+        login_form = self._hidden_inputs(login_page)
 
         login_form.update({
             'email': username.encode('cp1251'),
@@ -203,6 +209,12 @@ class VKIE(InfoExtractor):
             info_url += '&list=%s' % list_id
 
         info_page = self._download_webpage(info_url, video_id)
+
+        error_message = self._html_search_regex(
+            r'(?s)<!><div[^>]+class="video_layer_message"[^>]*>(.+?)</div>',
+            info_page, 'error message', default=None)
+        if error_message:
+            raise ExtractorError(error_message, expected=True)
 
         if re.search(r'<!>/login\.php\?.*\bact=security_check', info_page):
             raise ExtractorError(
@@ -289,25 +301,34 @@ class VKIE(InfoExtractor):
 
 
 class VKUserVideosIE(InfoExtractor):
-    IE_NAME = 'vk.com:user-videos'
-    IE_DESC = 'vk.com:All of a user\'s videos'
-    _VALID_URL = r'https?://vk\.com/videos(?P<id>[0-9]+)(?:m\?.*)?'
+    IE_NAME = 'vk:uservideos'
+    IE_DESC = "VK - User's Videos"
+    _VALID_URL = r'https?://vk\.com/videos(?P<id>-?[0-9]+)$'
     _TEMPLATE_URL = 'https://vk.com/videos'
-    _TEST = {
+    _TESTS = [{
         'url': 'http://vk.com/videos205387401',
         'info_dict': {
             'id': '205387401',
+            'title': "Tom Cruise's Videos",
         },
         'playlist_mincount': 4,
-    }
+    }, {
+        'url': 'http://vk.com/videos-77521',
+        'only_matching': True,
+    }]
 
     def _real_extract(self, url):
         page_id = self._match_id(url)
-        page = self._download_webpage(url, page_id)
-        video_ids = orderedSet(
-            m.group(1) for m in re.finditer(r'href="/video([0-9_]+)"', page))
-        url_entries = [
+
+        webpage = self._download_webpage(url, page_id)
+
+        entries = [
             self.url_result(
                 'http://vk.com/video' + video_id, 'VK', video_id=video_id)
-            for video_id in video_ids]
-        return self.playlist_result(url_entries, page_id)
+            for video_id in orderedSet(re.findall(r'href="/video(-?[0-9_]+)"', webpage))]
+
+        title = unescapeHTML(self._search_regex(
+            r'<title>\s*([^<]+?)\s+\|\s+\d+\s+videos',
+            webpage, 'title', default=page_id))
+
+        return self.playlist_result(entries, page_id, title)

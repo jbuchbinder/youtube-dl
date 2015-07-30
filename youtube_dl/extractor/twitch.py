@@ -59,7 +59,7 @@ class TwitchBaseIE(InfoExtractor):
         login_page = self._download_webpage(
             self._LOGIN_URL, None, 'Downloading login page')
 
-        login_form = self._form_hidden_inputs(login_page)
+        login_form = self._hidden_inputs(login_page)
 
         login_form.update({
             'login': username.encode('utf-8'),
@@ -310,9 +310,9 @@ class TwitchBookmarksIE(TwitchPlaylistBaseIE):
 
 class TwitchStreamIE(TwitchBaseIE):
     IE_NAME = 'twitch:stream'
-    _VALID_URL = r'%s/(?P<id>[^/]+)/?(?:\#.*)?$' % TwitchBaseIE._VALID_URL_BASE
+    _VALID_URL = r'%s/(?P<id>[^/#?]+)/?(?:\#.*)?$' % TwitchBaseIE._VALID_URL_BASE
 
-    _TEST = {
+    _TESTS = [{
         'url': 'http://www.twitch.tv/shroomztv',
         'info_dict': {
             'id': '12772022048',
@@ -331,7 +331,10 @@ class TwitchStreamIE(TwitchBaseIE):
             # m3u8 download
             'skip_download': True,
         },
-    }
+    }, {
+        'url': 'http://www.twitch.tv/miracle_doto#profile-0',
+        'only_matching': True,
+    }]
 
     def _real_extract(self, url):
         channel_id = self._match_id(url)
@@ -345,6 +348,12 @@ class TwitchStreamIE(TwitchBaseIE):
             return self.url_result(
                 'http://www.twitch.tv/%s/profile' % channel_id,
                 'TwitchProfile', channel_id)
+
+        # Channel name may be typed if different case than the original channel name
+        # (e.g. http://www.twitch.tv/TWITCHPLAYSPOKEMON) that will lead to constructing
+        # an invalid m3u8 URL. Working around by use of original channel name from stream
+        # JSON and fallback to lowercase if it's not available.
+        channel_id = stream.get('channel', {}).get('name') or channel_id.lower()
 
         access_token = self._download_json(
             '%s/api/channels/%s/access_token' % (self._API_BASE, channel_id), channel_id,

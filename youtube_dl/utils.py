@@ -576,11 +576,9 @@ class ContentTooShortError(Exception):
     download is too small for what the server announced first, indicating
     the connection was probably interrupted.
     """
-    # Both in bytes
-    downloaded = None
-    expected = None
 
     def __init__(self, downloaded, expected):
+        # Both in bytes
         self.downloaded = downloaded
         self.expected = expected
 
@@ -1309,10 +1307,10 @@ def parse_duration(s):
     m = re.match(
         r'''(?ix)(?:P?T)?
         (?:
-            (?P<only_mins>[0-9.]+)\s*(?:mins?|minutes?)\s*|
+            (?P<only_mins>[0-9.]+)\s*(?:mins?\.?|minutes?)\s*|
             (?P<only_hours>[0-9.]+)\s*(?:hours?)|
 
-            \s*(?P<hours_reversed>[0-9]+)\s*(?:[:h]|hours?)\s*(?P<mins_reversed>[0-9]+)\s*(?:[:m]|mins?|minutes?)\s*|
+            \s*(?P<hours_reversed>[0-9]+)\s*(?:[:h]|hours?)\s*(?P<mins_reversed>[0-9]+)\s*(?:[:m]|mins?\.?|minutes?)\s*|
             (?:
                 (?:
                     (?:(?P<days>[0-9]+)\s*(?:[:d]|days?)\s*)?
