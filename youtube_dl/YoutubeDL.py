@@ -28,7 +28,6 @@ if os.name == 'nt':
     import ctypes
 
 from .compat import (
-    compat_basestring,
     compat_cookiejar,
     compat_expanduser,
     compat_get_terminal_size,
@@ -40,7 +39,6 @@ from .compat import (
     compat_urllib_request,
 )
 from .utils import (
-    escape_url,
     ContentTooShortError,
     date_from_str,
     DateRange,
@@ -51,7 +49,6 @@ from .utils import (
     ExtractorError,
     format_bytes,
     formatSeconds,
-    HEADRequest,
     locked_file,
     make_HTTPS_handler,
     MaxDownloadsReached,
@@ -933,6 +930,37 @@ class YoutubeDL(object):
                 else:
                     filter_parts.append(string)
 
+        def _remove_unused_ops(tokens):
+            # Remove operators that we don't use and join them with the sourrounding strings
+            # for example: 'mp4' '-' 'baseline' '-' '16x9' is converted to 'mp4-baseline-16x9'
+            ALLOWED_OPS = ('/', '+', ',', '(', ')')
+            last_string, last_start, last_end, last_line = None, None, None, None
+            for type, string, start, end, line in tokens:
+                if type == tokenize.OP and string == '[':
+                    if last_string:
+                        yield tokenize.NAME, last_string, last_start, last_end, last_line
+                        last_string = None
+                    yield type, string, start, end, line
+                    # everything inside brackets will be handled by _parse_filter
+                    for type, string, start, end, line in tokens:
+                        yield type, string, start, end, line
+                        if type == tokenize.OP and string == ']':
+                            break
+                elif type == tokenize.OP and string in ALLOWED_OPS:
+                    if last_string:
+                        yield tokenize.NAME, last_string, last_start, last_end, last_line
+                        last_string = None
+                    yield type, string, start, end, line
+                elif type in [tokenize.NAME, tokenize.NUMBER, tokenize.OP]:
+                    if not last_string:
+                        last_string = string
+                        last_start = start
+                        last_end = end
+                    else:
+                        last_string += string
+            if last_string:
+                yield tokenize.NAME, last_string, last_start, last_end, last_line
+
         def _parse_format_selection(tokens, inside_merge=False, inside_choice=False, inside_group=False):
             selectors = []
             current_selector = None
@@ -1111,7 +1139,7 @@ class YoutubeDL(object):
 
         stream = io.BytesIO(format_spec.encode('utf-8'))
         try:
-            tokens = list(compat_tokenize_tokenize(stream.readline))
+            tokens = list(_remove_unused_ops(compat_tokenize_tokenize(stream.readline)))
         except tokenize.TokenError:
             raise syntax_error('Missing closing/opening brackets or parenthesis', (0, len(format_spec)))
 
@@ -1829,27 +1857,6 @@ class YoutubeDL(object):
 
     def urlopen(self, req):
         """ Start an HTTP download """
-
-        # According to RFC 3986, URLs can not contain non-ASCII characters, however this is not
-        # always respected by websites, some tend to give out URLs with non percent-encoded
-        # non-ASCII characters (see telemb.py, ard.py [#3412])
-        # urllib chokes on URLs with non-ASCII characters (see http://bugs.python.org/issue3991)
-        # To work around aforementioned issue we will replace request's original URL with
-        # percent-encoded one
-        req_is_string = isinstance(req, compat_basestring)
-        url = req if req_is_string else req.get_full_url()
-        url_escaped = escape_url(url)
-
-        # Substitute URL if any change after escaping
-        if url != url_escaped:
-            if req_is_string:
-                req = url_escaped
-            else:
-                req_type = HEADRequest if req.get_method() == 'HEAD' else compat_urllib_request.Request
-                req = req_type(
-                    url_escaped, data=req.data, headers=req.headers,
-                    origin_req_host=req.origin_req_host, unverifiable=req.unverifiable)
-
         return self._opener.open(req, timeout=self._socket_timeout)
 
     def print_debug_header(self):
