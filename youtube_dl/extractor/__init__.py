@@ -345,6 +345,7 @@ from .muenchentv import MuenchenTVIE
 from .musicplayon import MusicPlayOnIE
 from .musicvault import MusicVaultIE
 from .muzu import MuzuTVIE
+from .mwave import MwaveIE
 from .myspace import MySpaceIE, MySpaceAlbumIE
 from .myspass import MySpassIE
 from .myvi import MyviIE
@@ -358,6 +359,7 @@ from .nbc import (
     NBCNewsIE,
     NBCSportsIE,
     NBCSportsVPlayerIE,
+    MSNBCIE,
 )
 from .ndr import (
     NDRIE,
@@ -612,7 +614,10 @@ from .testurl import TestURLIE
 from .testtube import TestTubeIE
 from .tf1 import TF1IE
 from .theonion import TheOnionIE
-from .theplatform import ThePlatformIE
+from .theplatform import (
+    ThePlatformIE,
+    ThePlatformFeedIE,
+)
 from .thesixtyone import TheSixtyOneIE
 from .thisamericanlife import ThisAmericanLifeIE
 from .thisav import ThisAVIE
@@ -696,7 +701,6 @@ from .vgtv import (
 from .vh1 import VH1IE
 from .vice import ViceIE
 from .viddler import ViddlerIE
-from .videobam import VideoBamIE
 from .videodetective import VideoDetectiveIE
 from .videolecturesnet import VideoLecturesNetIE
 from .videofyme import VideofyMeIE

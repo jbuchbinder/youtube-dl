@@ -1052,7 +1052,7 @@ class InfoExtractor(object):
         return self._search_regex(
             r'(?i)^{([^}]+)?}smil$', smil.tag, 'namespace', default=None)
 
-    def _parse_smil_formats(self, smil, smil_url, video_id, namespace=None, f4m_params=None):
+    def _parse_smil_formats(self, smil, smil_url, video_id, namespace=None, f4m_params=None, transform_rtmp_url=None):
         base = smil_url
         for meta in smil.findall(self._xpath_ns('./head/meta', namespace)):
             b = meta.get('base') or meta.get('httpBase')
@@ -1091,6 +1091,12 @@ class InfoExtractor(object):
                     'width': width,
                     'height': height,
                 })
+                if transform_rtmp_url:
+                    streamer, src = transform_rtmp_url(streamer, src)
+                    formats[-1].update({
+                        'url': streamer,
+                        'play_path': src,
+                    })
                 continue
 
             src_url = src if src.startswith('http') else compat_urlparse.urljoin(base, src)
@@ -1129,7 +1135,7 @@ class InfoExtractor(object):
 
         return formats
 
-    def _parse_smil_subtitles(self, smil, namespace=None):
+    def _parse_smil_subtitles(self, smil, namespace=None, subtitles_lang='en'):
         subtitles = {}
         for num, textstream in enumerate(smil.findall(self._xpath_ns('.//textstream', namespace))):
             src = textstream.get('src')
@@ -1138,9 +1144,14 @@ class InfoExtractor(object):
             ext = textstream.get('ext') or determine_ext(src)
             if not ext:
                 type_ = textstream.get('type')
-                if type_ == 'text/srt':
-                    ext = 'srt'
-            lang = textstream.get('systemLanguage') or textstream.get('systemLanguageName')
+                SUBTITLES_TYPES = {
+                    'text/vtt': 'vtt',
+                    'text/srt': 'srt',
+                    'application/smptett+xml': 'tt',
+                }
+                if type_ in SUBTITLES_TYPES:
+                    ext = SUBTITLES_TYPES[type_]
+            lang = textstream.get('systemLanguage') or textstream.get('systemLanguageName') or textstream.get('lang') or subtitles_lang
             subtitles.setdefault(lang, []).append({
                 'url': src,
                 'ext': ext,
@@ -1267,6 +1278,23 @@ class InfoExtractor(object):
 
     def _get_subtitles(self, *args, **kwargs):
         raise NotImplementedError("This method must be implemented by subclasses")
+
+    @staticmethod
+    def _merge_subtitle_items(subtitle_list1, subtitle_list2):
+        """ Merge subtitle items for one language. Items with duplicated URLs
+        will be dropped. """
+        list1_urls = set([item['url'] for item in subtitle_list1])
+        ret = list(subtitle_list1)
+        ret.extend([item for item in subtitle_list2 if item['url'] not in list1_urls])
+        return ret
+
+    @classmethod
+    def _merge_subtitles(kls, subtitle_dict1, subtitle_dict2):
+        """ Merge two subtitle dictionaries, language by language. """
+        ret = dict(subtitle_dict1)
+        for lang in subtitle_dict2:
+            ret[lang] = kls._merge_subtitle_items(subtitle_dict1.get(lang, []), subtitle_dict2[lang])
+        return ret
 
     def extract_automatic_captions(self, *args, **kwargs):
         if (self._downloader.params.get('writeautomaticsub', False) or
