@@ -166,7 +166,7 @@
  - **Folketinget**: Folketinget (ft.dk; Danish parliament)
  - **FootyRoom**
  - **Foxgay**
- - **FoxNews**
+ - **FoxNews**: Fox News and Fox Business Video
  - **FoxSports**
  - **france2.fr:generation-quoi**
  - **FranceCulture**
@@ -220,6 +220,7 @@
  - **imdb**: Internet Movie Database trailers
  - **imdb:list**: Internet Movie Database lists
  - **Imgur**
+ - **ImgurAlbum**
  - **Ina**
  - **Indavideo**
  - **IndavideoEmbed**
@@ -301,13 +302,16 @@
  - **Moviezine**
  - **movshare**: MovShare
  - **MPORA**
+ - **MSNBC**
  - **MTV**
+ - **mtv.de**
  - **mtviggy.com**
  - **mtvservices:embedded**
  - **MuenchenTV**: münchen.tv
  - **MusicPlayOn**
  - **MusicVault**
  - **muzu.tv**
+ - **Mwave**
  - **MySpace**
  - **MySpace:album**
  - **MySpass**
@@ -392,6 +396,8 @@
  - **Playtvak**: Playtvak.cz, iDNES.cz and Lidovky.cz
  - **Playvid**
  - **Playwire**
+ - **pluralsight**
+ - **pluralsight:course**
  - **plus.google**: Google Plus
  - **pluzz.francetv.fr**
  - **podomatic**
@@ -461,7 +467,7 @@
  - **Sexu**
  - **SexyKarma**: Sexy Karma and Watch Indian Porn
  - **Shahid**
- - **Shared**
+ - **Shared**: shared.sx and vivo.sx
  - **ShareSix**
  - **Sina**
  - **Slideshare**
@@ -534,6 +540,7 @@
  - **TF1**
  - **TheOnion**
  - **ThePlatform**
+ - **ThePlatformFeed**
  - **TheSixtyOne**
  - **ThisAmericanLife**
  - **ThisAV**
@@ -599,7 +606,6 @@
  - **Viddler**
  - **video.google:search**: Google Video search
  - **video.mit.edu**
- - **VideoBam**
  - **VideoDetective**
  - **videofy.me**
  - **videolectures.net**

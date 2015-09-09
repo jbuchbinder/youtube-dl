@@ -510,6 +510,12 @@ class InfoExtractor(object):
         """Report attempt to log in."""
         self.to_screen('Logging in')
 
+    @staticmethod
+    def raise_login_required(msg='This video is only available for registered users'):
+        raise ExtractorError(
+            '%s. Use --username and --password or --netrc to provide account credentials.' % msg,
+            expected=True)
+
     # Methods for following #608
     @staticmethod
     def url_result(url, ie=None, video_id=None, video_title=None):
@@ -727,7 +733,7 @@ class InfoExtractor(object):
     def _hidden_inputs(html):
         hidden_inputs = {}
         for input in re.findall(r'<input([^>]+)>', html):
-            if not re.search(r'type=(["\'])hidden\1', input):
+            if not re.search(r'type=(["\'])(?:hidden|submit)\1', input):
                 continue
             name = re.search(r'name=(["\'])(?P<value>.+?)\1', input)
             if not name:
@@ -1289,11 +1295,11 @@ class InfoExtractor(object):
         return ret
 
     @classmethod
-    def _merge_subtitles(kls, subtitle_dict1, subtitle_dict2):
+    def _merge_subtitles(cls, subtitle_dict1, subtitle_dict2):
         """ Merge two subtitle dictionaries, language by language. """
         ret = dict(subtitle_dict1)
         for lang in subtitle_dict2:
-            ret[lang] = kls._merge_subtitle_items(subtitle_dict1.get(lang, []), subtitle_dict2[lang])
+            ret[lang] = cls._merge_subtitle_items(subtitle_dict1.get(lang, []), subtitle_dict2[lang])
         return ret
 
     def extract_automatic_captions(self, *args, **kwargs):
