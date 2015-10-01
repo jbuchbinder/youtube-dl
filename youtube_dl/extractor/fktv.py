@@ -44,9 +44,9 @@ class FKTVIE(InfoExtractor):
 
         urls = re.findall(r'<source[^>]+src="([^"]+)"', sources)
         formats = [{
-            'url': url,
-            'format_id': determine_ext(url),
-        } for url in urls]
+            'url': furl,
+            'format_id': determine_ext(furl),
+        } for furl in urls]
         return {
             'id': episode,
             'title': title,
