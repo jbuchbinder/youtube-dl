@@ -53,6 +53,7 @@
  - **Bandcamp:album**
  - **bbc**: BBC
  - **bbc.co.uk**: BBC iPlayer
+ - **bbc.co.uk:article**: BBC articles
  - **BeatportPro**
  - **Beeg**
  - **BehindKink**
@@ -81,6 +82,7 @@
  - **CBSSports**
  - **CeskaTelevize**
  - **channel9**: Channel 9
+ - **Chaturbate**
  - **Chilloutzone**
  - **chirbit**
  - **chirbit:profile**
@@ -91,6 +93,7 @@
  - **Clipsyndicate**
  - **Cloudy**
  - **Clubic**
+ - **Clyp**
  - **cmt.com**
  - **CNET**
  - **CNN**
@@ -158,6 +161,7 @@
  - **facebook**
  - **faz.net**
  - **fc2**
+ - **Fczenit**
  - **fernsehkritik.tv**
  - **Firstpost**
  - **FiveTV**
@@ -278,9 +282,8 @@
  - **macgamestore**: MacGameStore trailers
  - **mailru**: Видео@Mail.Ru
  - **Malemotion**
- - **MDR**
+ - **MDR**: MDR.DE and KiKA
  - **media.ccc.de**
- - **MegaVideoz**
  - **metacafe**
  - **Metacritic**
  - **Mgoon**
@@ -514,6 +517,7 @@
  - **SSA**
  - **stanfordoc**: Stanford Open ClassRoom
  - **Steam**
+ - **Stitcher**
  - **streamcloud.eu**
  - **StreamCZ**
  - **StreetVoice**
@@ -587,7 +591,8 @@
  - **twitch:stream**
  - **twitch:video**
  - **twitch:vod**
- - **TwitterCard**
+ - **twitter**
+ - **twitter:card**
  - **Ubu**
  - **udemy**
  - **udemy:course**

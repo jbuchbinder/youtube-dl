@@ -45,6 +45,7 @@ from .bambuser import BambuserIE, BambuserChannelIE
 from .bandcamp import BandcampIE, BandcampAlbumIE
 from .bbc import (
     BBCCoUkIE,
+    BBCCoUkArticleIE,
     BBCIE,
 )
 from .beeg import BeegIE
@@ -76,6 +77,7 @@ from .cbssports import CBSSportsIE
 from .ccc import CCCIE
 from .ceskatelevize import CeskaTelevizeIE
 from .channel9 import Channel9IE
+from .chaturbate import ChaturbateIE
 from .chilloutzone import ChilloutzoneIE
 from .chirbit import (
     ChirbitIE,
@@ -88,6 +90,7 @@ from .cliphunter import CliphunterIE
 from .clipsyndicate import ClipsyndicateIE
 from .cloudy import CloudyIE
 from .clubic import ClubicIE
+from .clyp import ClypIE
 from .cmt import CMTIE
 from .cnet import CNETIE
 from .cnn import (
@@ -166,6 +169,7 @@ from .extremetube import ExtremeTubeIE
 from .facebook import FacebookIE
 from .faz import FazIE
 from .fc2 import FC2IE
+from .fczenit import FczenitIE
 from .firstpost import FirstpostIE
 from .firsttv import FirstTVIE
 from .fivemin import FiveMinIE
@@ -317,7 +321,6 @@ from .macgamestore import MacGameStoreIE
 from .mailru import MailRuIE
 from .malemotion import MalemotionIE
 from .mdr import MDRIE
-from .megavideoz import MegaVideozIE
 from .metacafe import MetacafeIE
 from .metacritic import MetacriticIE
 from .mgoon import MgoonIE
@@ -585,6 +588,7 @@ from .spankwire import SpankwireIE
 from .spiegel import SpiegelIE, SpiegelArticleIE
 from .spiegeltv import SpiegeltvIE
 from .spike import SpikeIE
+from .stitcher import StitcherIE
 from .sport5 import Sport5IE
 from .sportbox import (
     SportBoxIE,
@@ -689,7 +693,7 @@ from .twitch import (
     TwitchBookmarksIE,
     TwitchStreamIE,
 )
-from .twitter import TwitterCardIE
+from .twitter import TwitterCardIE, TwitterIE
 from .ubu import UbuIE
 from .udemy import (
     UdemyIE,
