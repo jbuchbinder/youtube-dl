@@ -178,15 +178,13 @@ class YoutubeBaseInfoExtractor(InfoExtractor):
             return
 
 
-class YoutubePlaylistBaseInfoExtractor(InfoExtractor):
-    # Extract the video ids from the playlist pages
+class YoutubeEntryListBaseInfoExtractor(InfoExtractor):
+    # Extract entries from page with "Load more" button
     def _entries(self, page, playlist_id):
         more_widget_html = content_html = page
         for page_num in itertools.count(1):
-            for video_id, video_title in self.extract_videos_from_page(content_html):
-                yield self.url_result(
-                    video_id, 'Youtube', video_id=video_id,
-                    video_title=video_title)
+            for entry in self._process_page(content_html):
+                yield entry
 
             mobj = re.search(r'data-uix-load-more-href="/?(?P<more>[^"]+)"', more_widget_html)
             if not mobj:
@@ -202,6 +200,12 @@ class YoutubePlaylistBaseInfoExtractor(InfoExtractor):
                 # have more videos
                 break
             more_widget_html = more['load_more_widget_html']
+
+
+class YoutubePlaylistBaseInfoExtractor(YoutubeEntryListBaseInfoExtractor):
+    def _process_page(self, content):
+        for video_id, video_title in self.extract_videos_from_page(content):
+            yield self.url_result(video_id, 'Youtube', video_id, video_title)
 
     def extract_videos_from_page(self, page):
         ids_in_page = []
@@ -222,6 +226,19 @@ class YoutubePlaylistBaseInfoExtractor(InfoExtractor):
                 ids_in_page.append(video_id)
                 titles_in_page.append(video_title)
         return zip(ids_in_page, titles_in_page)
+
+
+class YoutubePlaylistsBaseInfoExtractor(YoutubeEntryListBaseInfoExtractor):
+    def _process_page(self, content):
+        for playlist_id in re.findall(r'href="/?playlist\?list=(.+?)"', content):
+            yield self.url_result(
+                'https://www.youtube.com/playlist?list=%s' % playlist_id, 'YoutubePlaylist')
+
+    def _real_extract(self, url):
+        playlist_id = self._match_id(url)
+        webpage = self._download_webpage(url, playlist_id)
+        title = self._og_search_title(webpage, fatal=False)
+        return self.playlist_result(self._entries(webpage, playlist_id), playlist_id, title)
 
 
 class YoutubeIE(YoutubeBaseInfoExtractor):
@@ -1615,7 +1632,7 @@ class YoutubePlaylistIE(YoutubeBaseInfoExtractor, YoutubePlaylistBaseInfoExtract
                 self.report_warning('Youtube gives an alert message: ' + match)
 
         playlist_title = self._html_search_regex(
-            r'(?s)<h1 class="pl-header-title[^"]*">\s*(.*?)\s*</h1>',
+            r'(?s)<h1 class="pl-header-title[^"]*"[^>]*>\s*(.*?)\s*</h1>',
             page, 'title')
 
         return self.playlist_result(self._entries(page, playlist_id), playlist_id, playlist_title)
@@ -1742,6 +1759,29 @@ class YoutubeUserIE(YoutubeChannelIE):
             return super(YoutubeUserIE, cls).suitable(url)
 
 
+class YoutubeUserPlaylistsIE(YoutubePlaylistsBaseInfoExtractor):
+    IE_DESC = 'YouTube.com user playlists'
+    _VALID_URL = r'https?://(?:\w+\.)?youtube\.com/user/(?P<id>[^/]+)/playlists'
+    IE_NAME = 'youtube:user:playlists'
+
+    _TESTS = [{
+        'url': 'http://www.youtube.com/user/ThirstForScience/playlists',
+        'playlist_mincount': 4,
+        'info_dict': {
+            'id': 'ThirstForScience',
+            'title': 'Thirst for Science',
+        },
+    }, {
+        # with "Load more" button
+        'url': 'http://www.youtube.com/user/igorkle1/playlists?view=1&sort=dd',
+        'playlist_mincount': 70,
+        'info_dict': {
+            'id': 'igorkle1',
+            'title': 'Игорь Клейнер',
+        },
+    }]
+
+
 class YoutubeSearchIE(SearchInfoExtractor, YoutubePlaylistIE):
     IE_DESC = 'YouTube.com searches'
     # there doesn't appear to be a real limit, for example if you search for
@@ -1837,7 +1877,7 @@ class YoutubeSearchURLIE(InfoExtractor):
         }
 
 
-class YoutubeShowIE(InfoExtractor):
+class YoutubeShowIE(YoutubePlaylistsBaseInfoExtractor):
     IE_DESC = 'YouTube.com (multi-season) shows'
     _VALID_URL = r'https?://www\.youtube\.com/show/(?P<id>[^?#]*)'
     IE_NAME = 'youtube:show'
@@ -1851,26 +1891,9 @@ class YoutubeShowIE(InfoExtractor):
     }]
 
     def _real_extract(self, url):
-        mobj = re.match(self._VALID_URL, url)
-        playlist_id = mobj.group('id')
-        webpage = self._download_webpage(
-            'https://www.youtube.com/show/%s/playlists' % playlist_id, playlist_id, 'Downloading show webpage')
-        # There's one playlist for each season of the show
-        m_seasons = list(re.finditer(r'href="(/playlist\?list=.*?)"', webpage))
-        self.to_screen('%s: Found %s seasons' % (playlist_id, len(m_seasons)))
-        entries = [
-            self.url_result(
-                'https://www.youtube.com' + season.group(1), 'YoutubePlaylist')
-            for season in m_seasons
-        ]
-        title = self._og_search_title(webpage, fatal=False)
-
-        return {
-            '_type': 'playlist',
-            'id': playlist_id,
-            'title': title,
-            'entries': entries,
-        }
+        playlist_id = self._match_id(url)
+        return super(YoutubeShowIE, self)._real_extract(
+            'https://www.youtube.com/show/%s/playlists' % playlist_id)
 
 
 class YoutubeFeedsInfoExtractor(YoutubeBaseInfoExtractor):

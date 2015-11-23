@@ -156,7 +156,7 @@ class YoutubeDL(object):
     writethumbnail:    Write the thumbnail image to a file
     write_all_thumbnails:  Write all thumbnail formats to files
     writesubtitles:    Write the video subtitles to a file
-    writeautomaticsub: Write the automatic subtitles to a file
+    writeautomaticsub: Write the automatically generated subtitles to a file
     allsubtitles:      Downloads all the subtitles of the video
                        (requires writesubtitles or writeautomaticsub)
     listsubtitles:     Lists all available subtitles for the video
@@ -833,6 +833,7 @@ class YoutubeDL(object):
                                                       extra_info=extra)
                 playlist_results.append(entry_result)
             ie_result['entries'] = playlist_results
+            self.to_screen('[download] Finished downloading playlist: %s' % playlist)
             return ie_result
         elif result_type == 'compat_list':
             self.report_warning(
@@ -937,7 +938,7 @@ class YoutubeDL(object):
                     filter_parts.append(string)
 
         def _remove_unused_ops(tokens):
-            # Remove operators that we don't use and join them with the sourrounding strings
+            # Remove operators that we don't use and join them with the surrounding strings
             # for example: 'mp4' '-' 'baseline' '-' '16x9' is converted to 'mp4-baseline-16x9'
             ALLOWED_OPS = ('/', '+', ',', '(', ')')
             last_string, last_start, last_end, last_line = None, None, None, None

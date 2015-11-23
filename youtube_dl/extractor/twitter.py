@@ -20,7 +20,7 @@ class TwitterCardIE(InfoExtractor):
     _TESTS = [
         {
             'url': 'https://twitter.com/i/cards/tfw/v1/560070183650213889',
-            'md5': '7d2f6b4d2eb841a7ccc893d479bfceb4',
+            'md5': '4fa26a35f9d1bf4b646590ba8e84be19',
             'info_dict': {
                 'id': '560070183650213889',
                 'ext': 'mp4',
@@ -52,6 +52,20 @@ class TwitterCardIE(InfoExtractor):
                 'uploader': 'OMG! Ubuntu!',
                 'uploader_id': 'omgubuntu',
             },
+            'add_ie': ['Youtube'],
+        },
+        {
+            'url': 'https://twitter.com/i/cards/tfw/v1/665289828897005568',
+            'md5': 'ab2745d0b0ce53319a534fccaa986439',
+            'info_dict': {
+                'id': 'iBb2x00UVlv',
+                'ext': 'mp4',
+                'upload_date': '20151113',
+                'uploader_id': '1189339351084113920',
+                'uploader': '@ArsenalTerje',
+                'title': 'Vine by @ArsenalTerje',
+            },
+            'add_ie': ['Vine'],
         }
     ]
 
@@ -71,11 +85,11 @@ class TwitterCardIE(InfoExtractor):
             request.add_header('User-Agent', user_agent)
             webpage = self._download_webpage(request, video_id)
 
-            youtube_url = self._html_search_regex(
-                r'<iframe[^>]+src="((?:https?:)?//www.youtube.com/embed/[^"]+)"',
-                webpage, 'youtube iframe', default=None)
-            if youtube_url:
-                return self.url_result(youtube_url, 'Youtube')
+            iframe_url = self._html_search_regex(
+                r'<iframe[^>]+src="((?:https?:)?//(?:www.youtube.com/embed/[^"]+|(?:www\.)?vine\.co/v/\w+/card))"',
+                webpage, 'video iframe', default=None)
+            if iframe_url:
+                return self.url_result(iframe_url)
 
             config = self._parse_json(self._html_search_regex(
                 r'data-player-config="([^"]+)"', webpage, 'data player config'),
@@ -124,7 +138,7 @@ class TwitterIE(InfoExtractor):
 
     _TESTS = [{
         'url': 'https://twitter.com/freethenipple/status/643211948184596480',
-        'md5': '31cd83a116fc41f99ae3d909d4caf6a0',
+        'md5': 'db6612ec5d03355953c3ca9250c97e5e',
         'info_dict': {
             'id': '643211948184596480',
             'ext': 'mp4',
@@ -147,6 +161,17 @@ class TwitterIE(InfoExtractor):
             'uploader': 'Gifs',
             'uploader_id': 'giphz',
         },
+    }, {
+        'url': 'https://twitter.com/starwars/status/665052190608723968',
+        'md5': '39b7199856dee6cd4432e72c74bc69d4',
+        'info_dict': {
+            'id': '665052190608723968',
+            'ext': 'mp4',
+            'title': 'Star Wars - A new beginning is coming December 18. Watch the official 60 second #TV spot for #StarWars: #TheForceAwakens.',
+            'description': 'Star Wars on Twitter: "A new beginning is coming December 18. Watch the official 60 second #TV spot for #StarWars: #TheForceAwakens."',
+            'uploader_id': 'starwars',
+            'uploader': 'Star Wars',
+        },
     }]
 
     def _real_extract(self, url):
@@ -158,17 +183,16 @@ class TwitterIE(InfoExtractor):
 
         username = remove_end(self._og_search_title(webpage), ' on Twitter')
 
-        title = self._og_search_description(webpage).strip('').replace('\n', ' ')
+        title = description = self._og_search_description(webpage).strip('').replace('\n', ' ').strip('“”')
 
         # strip  'https -_t.co_BJYgOjSeGA' junk from filenames
-        mobj = re.match(r'“(.*)\s+(https?://[^ ]+)”', title)
-        title, short_url = mobj.groups()
+        title = re.sub(r'\s+(https?://[^ ]+)', '', title)
 
         info = {
             'uploader_id': user_id,
             'uploader': username,
             'webpage_url': url,
-            'description': '%s on Twitter: "%s %s"' % (username, title, short_url),
+            'description': '%s on Twitter: "%s"' % (username, description),
             'title': username + ' - ' + title,
         }
 
