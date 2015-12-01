@@ -20,7 +20,6 @@ from ..compat import (
     compat_urllib_parse_unquote,
     compat_urllib_parse_unquote_plus,
     compat_urllib_parse_urlparse,
-    compat_urllib_request,
     compat_urlparse,
     compat_str,
 )
@@ -35,6 +34,7 @@ from ..utils import (
     orderedSet,
     parse_duration,
     remove_start,
+    sanitized_Request,
     smuggle_url,
     str_to_int,
     unescapeHTML,
@@ -114,7 +114,7 @@ class YoutubeBaseInfoExtractor(InfoExtractor):
 
         login_data = compat_urllib_parse.urlencode(encode_dict(login_form_strs)).encode('ascii')
 
-        req = compat_urllib_request.Request(self._LOGIN_URL, login_data)
+        req = sanitized_Request(self._LOGIN_URL, login_data)
         login_results = self._download_webpage(
             req, None,
             note='Logging in', errnote='unable to log in', fatal=False)
@@ -147,7 +147,7 @@ class YoutubeBaseInfoExtractor(InfoExtractor):
 
             tfa_data = compat_urllib_parse.urlencode(encode_dict(tfa_form_strs)).encode('ascii')
 
-            tfa_req = compat_urllib_request.Request(self._TWOFACTOR_URL, tfa_data)
+            tfa_req = sanitized_Request(self._TWOFACTOR_URL, tfa_data)
             tfa_results = self._download_webpage(
                 tfa_req, None,
                 note='Submitting TFA code', errnote='unable to submit tfa', fatal=False)
@@ -258,7 +258,7 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
                              |(?:                                             # or the v= param in all its forms
                                  (?:(?:watch|movie)(?:_popup)?(?:\.php)?/?)?  # preceding watch(_popup|.php) or nothing (like /?v=xxxx)
                                  (?:\?|\#!?)                                  # the params delimiter ? or # or #!
-                                 (?:.*?&)??                                   # any other preceding param (like /?s=tuff&v=xxxx)
+                                 (?:.*?[&;])??                                # any other preceding param (like /?s=tuff&v=xxxx or ?s=tuff&amp;v=V36LpHqtcDY)
                                  v=
                              )
                          ))
@@ -346,6 +346,7 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
         '247': {'ext': 'webm', 'height': 720, 'format_note': 'DASH video', 'acodec': 'none', 'preference': -40},
         '248': {'ext': 'webm', 'height': 1080, 'format_note': 'DASH video', 'acodec': 'none', 'preference': -40},
         '271': {'ext': 'webm', 'height': 1440, 'format_note': 'DASH video', 'acodec': 'none', 'preference': -40},
+        # itag 272 videos are either 3840x2160 (e.g. RtoitU2A-3E) or 7680x4320 (sLprVF6d7Ug)
         '272': {'ext': 'webm', 'height': 2160, 'format_note': 'DASH video', 'acodec': 'none', 'preference': -40},
         '302': {'ext': 'webm', 'height': 720, 'format_note': 'DASH video', 'acodec': 'none', 'preference': -40, 'fps': 60, 'vcodec': 'vp9'},
         '303': {'ext': 'webm', 'height': 1080, 'format_note': 'DASH video', 'acodec': 'none', 'preference': -40, 'fps': 60, 'vcodec': 'vp9'},
@@ -426,7 +427,8 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
                 'title': 'Principal Sexually Assaults A Teacher - Episode 117 - 8th June 2012',
                 'description': 'md5:09b78bd971f1e3e289601dfba15ca4f7',
                 'uploader': 'SET India',
-                'uploader_id': 'setindia'
+                'uploader_id': 'setindia',
+                'age_limit': 18,
             }
         },
         {
@@ -563,7 +565,7 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
             'info_dict': {
                 'id': 'lqQg6PlCWgI',
                 'ext': 'mp4',
-                'upload_date': '20120724',
+                'upload_date': '20150827',
                 'uploader_id': 'olympic',
                 'description': 'HO09  - Women -  GER-AUS - Hockey - 31 July 2012 - London 2012 Olympic Games',
                 'uploader': 'Olympics',
@@ -690,6 +692,47 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
         },
         {
             'url': 'http://vid.plus/FlRa-iH7PGw',
+            'only_matching': True,
+        },
+        {
+            # Title with JS-like syntax "};" (see https://github.com/rg3/youtube-dl/issues/7468)
+            'url': 'https://www.youtube.com/watch?v=lsguqyKfVQg',
+            'info_dict': {
+                'id': 'lsguqyKfVQg',
+                'ext': 'mp4',
+                'title': '{dark walk}; Loki/AC/Dishonored; collab w/Elflover21',
+                'description': 'md5:8085699c11dc3f597ce0410b0dcbb34a',
+                'upload_date': '20151119',
+                'uploader_id': 'IronSoulElf',
+                'uploader': 'IronSoulElf',
+            },
+            'params': {
+                'skip_download': True,
+            },
+        },
+        {
+            # Tags with '};' (see https://github.com/rg3/youtube-dl/issues/7468)
+            'url': 'https://www.youtube.com/watch?v=Ms7iBXnlUO8',
+            'only_matching': True,
+        },
+        {
+            # Video with yt:stretch=17:0
+            'url': 'https://www.youtube.com/watch?v=Q39EVAstoRM',
+            'info_dict': {
+                'id': 'Q39EVAstoRM',
+                'ext': 'mp4',
+                'title': 'Clash Of Clans#14 Dicas De Ataque Para CV 4',
+                'description': 'md5:ee18a25c350637c8faff806845bddee9',
+                'upload_date': '20151107',
+                'uploader_id': 'UCCr7TALkRbo3EtFzETQF1LA',
+                'uploader': 'CH GAMER DROID',
+            },
+            'params': {
+                'skip_download': True,
+            },
+        },
+        {
+            'url': 'https://www.youtube.com/watch?feature=player_embedded&amp;amp;v=V36LpHqtcDY',
             'only_matching': True,
         }
     ]
@@ -875,16 +918,33 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
             return {}
         return sub_lang_list
 
+    def _get_ytplayer_config(self, video_id, webpage):
+        patterns = (
+            # User data may contain arbitrary character sequences that may affect
+            # JSON extraction with regex, e.g. when '};' is contained the second
+            # regex won't capture the whole JSON. Yet working around by trying more
+            # concrete regex first keeping in mind proper quoted string handling
+            # to be implemented in future that will replace this workaround (see
+            # https://github.com/rg3/youtube-dl/issues/7468,
+            # https://github.com/rg3/youtube-dl/pull/7599)
+            r';ytplayer\.config\s*=\s*({.+?});ytplayer',
+            r';ytplayer\.config\s*=\s*({.+?});',
+        )
+        config = self._search_regex(
+            patterns, webpage, 'ytplayer.config', default=None)
+        if config:
+            return self._parse_json(
+                uppercase_escape(config), video_id, fatal=False)
+
     def _get_automatic_captions(self, video_id, webpage):
         """We need the webpage for getting the captions url, pass it as an
            argument to speed up the process."""
         self.to_screen('%s: Looking for automatic captions' % video_id)
-        mobj = re.search(r';ytplayer.config = ({.*?});', webpage)
+        player_config = self._get_ytplayer_config(video_id, webpage)
         err_msg = 'Couldn\'t find automatic captions for %s' % video_id
-        if mobj is None:
+        if not player_config:
             self._downloader.report_warning(err_msg)
             return {}
-        player_config = json.loads(mobj.group(1))
         try:
             args = player_config['args']
             caption_url = args['ttsurl']
@@ -1091,10 +1151,8 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
             age_gate = False
             video_info = None
             # Try looking directly into the video webpage
-            mobj = re.search(r';ytplayer\.config\s*=\s*({.*?});', video_webpage)
-            if mobj:
-                json_code = uppercase_escape(mobj.group(1))
-                ytplayer_config = json.loads(json_code)
+            ytplayer_config = self._get_ytplayer_config(video_id, video_webpage)
+            if ytplayer_config:
                 args = ytplayer_config['args']
                 if args.get('url_encoded_fmt_stream_map'):
                     # Convert to the same format returned by compat_parse_qs
@@ -1422,6 +1480,9 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
             manifest_url = video_info['hlsvp'][0]
             url_map = self._extract_from_m3u8(manifest_url, video_id)
             formats = _map_to_format_list(url_map)
+            # Accept-Encoding header causes failures in live streams on Youtube and Youtube Gaming
+            for a_format in formats:
+                a_format.setdefault('http_headers', {})['Youtubedl-no-compression'] = 'True'
         else:
             raise ExtractorError('no conn, hlsvp or url_encoded_fmt_stream_map information found in video info')
 
@@ -1459,10 +1520,15 @@ class YoutubeIE(YoutubeBaseInfoExtractor):
             r'<meta\s+property="og:video:tag".*?content="yt:stretch=(?P<w>[0-9]+):(?P<h>[0-9]+)">',
             video_webpage)
         if stretched_m:
-            ratio = float(stretched_m.group('w')) / float(stretched_m.group('h'))
-            for f in formats:
-                if f.get('vcodec') != 'none':
-                    f['stretched_ratio'] = ratio
+            w = float(stretched_m.group('w'))
+            h = float(stretched_m.group('h'))
+            # yt:stretch may hold invalid ratio data (e.g. for Q39EVAstoRM ratio is 17:0).
+            # We will only process correct ratios.
+            if w > 0 and h > 0:
+                ratio = w / h
+                for f in formats:
+                    if f.get('vcodec') != 'none':
+                        f['stretched_ratio'] = ratio
 
         self._sort_formats(formats)
 
@@ -1501,7 +1567,7 @@ class YoutubePlaylistIE(YoutubeBaseInfoExtractor, YoutubePlaylistBaseInfoExtract
                         youtube\.com/
                         (?:
                            (?:course|view_play_list|my_playlists|artist|playlist|watch|embed/videoseries)
-                           \? (?:.*?&)*? (?:p|a|list)=
+                           \? (?:.*?[&;])*? (?:p|a|list)=
                         |  p/
                         )
                         (

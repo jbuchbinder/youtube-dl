@@ -28,6 +28,7 @@ if os.name == 'nt':
     import ctypes
 
 from .compat import (
+    compat_basestring,
     compat_cookiejar,
     compat_expanduser,
     compat_get_terminal_size,
@@ -63,6 +64,7 @@ from .utils import (
     SameFileError,
     sanitize_filename,
     sanitize_path,
+    sanitized_Request,
     std_headers,
     subtitles_filename,
     UnavailableVideoError,
@@ -1187,7 +1189,7 @@ class YoutubeDL(object):
         return res
 
     def _calc_cookies(self, info_dict):
-        pr = compat_urllib_request.Request(info_dict['url'])
+        pr = sanitized_Request(info_dict['url'])
         self.cookiejar.add_cookie_header(pr)
         return pr.get_header('Cookie')
 
@@ -1871,6 +1873,8 @@ class YoutubeDL(object):
 
     def urlopen(self, req):
         """ Start an HTTP download """
+        if isinstance(req, compat_basestring):
+            req = sanitized_Request(req)
         return self._opener.open(req, timeout=self._socket_timeout)
 
     def print_debug_header(self):
