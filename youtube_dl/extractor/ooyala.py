@@ -9,10 +9,13 @@ from ..utils import (
     ExtractorError,
     unsmuggle_url,
 )
-from ..compat import compat_urllib_parse
+from ..compat import compat_urllib_parse_urlencode
 
 
 class OoyalaBaseIE(InfoExtractor):
+    _PLAYER_BASE = 'http://player.ooyala.com/'
+    _CONTENT_TREE_BASE = _PLAYER_BASE + 'player_api/v1/content_tree/'
+    _AUTHORIZATION_URL_TEMPLATE = _PLAYER_BASE + 'sas/player_api/v1/authorization/embed_code/%s/%s?'
 
     def _extract(self, content_tree_url, video_id, domain='example.org'):
         content_tree = self._download_json(content_tree_url, video_id)['content_tree']
@@ -27,31 +30,43 @@ class OoyalaBaseIE(InfoExtractor):
             'duration': float_or_none(metadata.get('duration'), 1000),
         }
 
+        urls = []
         formats = []
         for supported_format in ('mp4', 'm3u8', 'hds', 'rtmp'):
             auth_data = self._download_json(
-                'http://player.ooyala.com/sas/player_api/v1/authorization/embed_code/%s/%s?' % (pcode, embed_code) + compat_urllib_parse.urlencode({'domain': domain, 'supportedFormats': supported_format}),
+                self._AUTHORIZATION_URL_TEMPLATE % (pcode, embed_code) +
+                compat_urllib_parse_urlencode({
+                    'domain': domain,
+                    'supportedFormats': supported_format
+                }),
                 video_id, 'Downloading %s JSON' % supported_format)
 
             cur_auth_data = auth_data['authorization_data'][embed_code]
 
             if cur_auth_data['authorized']:
                 for stream in cur_auth_data['streams']:
-                    url = base64.b64decode(stream['url']['data'].encode('ascii')).decode('utf-8')
+                    url = base64.b64decode(
+                        stream['url']['data'].encode('ascii')).decode('utf-8')
+                    if url in urls:
+                        continue
+                    urls.append(url)
                     delivery_type = stream['delivery_type']
-                    if delivery_type == 'remote_asset':
-                        video_info['url'] = url
-                        return video_info
-                    if delivery_type == 'hls':
-                        formats.extend(self._extract_m3u8_formats(url, embed_code, 'mp4', 'm3u8_native', m3u8_id='hls', fatal=False))
-                    elif delivery_type == 'hds':
-                        formats.extend(self._extract_f4m_formats(url, embed_code, -1, 'hds', fatal=False))
+                    if delivery_type == 'hls' or '.m3u8' in url:
+                        formats.extend(self._extract_m3u8_formats(
+                            url, embed_code, 'mp4', 'm3u8_native',
+                            m3u8_id='hls', fatal=False))
+                    elif delivery_type == 'hds' or '.f4m' in url:
+                        formats.extend(self._extract_f4m_formats(
+                            url + '?hdcore=3.7.0', embed_code, f4m_id='hds', fatal=False))
+                    elif '.smil' in url:
+                        formats.extend(self._extract_smil_formats(
+                            url, embed_code, fatal=False))
                     else:
                         formats.append({
                             'url': url,
                             'ext': stream.get('delivery_type'),
                             'vcodec': stream.get('video_codec'),
-                            'format_id': '%s-%s-%sp' % (stream.get('profile'), delivery_type, stream.get('height')),
+                            'format_id': delivery_type,
                             'width': int_or_none(stream.get('width')),
                             'height': int_or_none(stream.get('height')),
                             'abr': int_or_none(stream.get('audio_bitrate')),
@@ -59,7 +74,8 @@ class OoyalaBaseIE(InfoExtractor):
                             'fps': float_or_none(stream.get('framerate')),
                         })
             else:
-                raise ExtractorError('%s said: %s' % (self.IE_NAME, cur_auth_data['message']), expected=True)
+                raise ExtractorError('%s said: %s' % (
+                    self.IE_NAME, cur_auth_data['message']), expected=True)
         self._sort_formats(formats)
 
         video_info['formats'] = formats
@@ -80,6 +96,8 @@ class OoyalaIE(OoyalaBaseIE):
                 'description': 'How badly damaged does a drive have to be to defeat Russell and his crew? Apparently, smashed to bits.',
                 'duration': 853.386,
             },
+            # The video in the original webpage now uses PlayWire
+            'skip': 'Ooyala said: movie expired',
         }, {
             # Only available for ipad
             'url': 'http://player.ooyala.com/player.js?embedCode=x1b3lqZDq9y_7kMyC2Op5qo-p077tXD0',
@@ -117,7 +135,7 @@ class OoyalaIE(OoyalaBaseIE):
         url, smuggled_data = unsmuggle_url(url, {})
         embed_code = self._match_id(url)
         domain = smuggled_data.get('domain')
-        content_tree_url = 'http://player.ooyala.com/player_api/v1/content_tree/embed_code/%s/%s' % (embed_code, embed_code)
+        content_tree_url = self._CONTENT_TREE_BASE + 'embed_code/%s/%s' % (embed_code, embed_code)
         return self._extract(content_tree_url, embed_code, domain)
 
 
@@ -144,7 +162,7 @@ class OoyalaExternalIE(OoyalaBaseIE):
             'id': 'FkYWtmazr6Ed8xmvILvKLWjd4QvYZpzG',
             'ext': 'mp4',
             'title': 'dm_140128_30for30Shorts___JudgingJewellv2',
-            'duration': 1302000,
+            'duration': 1302.0,
         },
         'params': {
             # m3u8 download
@@ -154,5 +172,5 @@ class OoyalaExternalIE(OoyalaBaseIE):
 
     def _real_extract(self, url):
         partner_id, video_id, pcode = re.match(self._VALID_URL, url).groups()
-        content_tree_url = 'http://player.ooyala.com/player_api/v1/content_tree/external_id/%s/%s:%s' % (pcode, partner_id, video_id)
+        content_tree_url = self._CONTENT_TREE_BASE + 'external_id/%s/%s:%s' % (pcode, partner_id, video_id)
         return self._extract(content_tree_url, video_id)
