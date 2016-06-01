@@ -111,6 +111,7 @@ from .cbc import (
     CBCPlayerIE,
 )
 from .cbs import CBSIE
+from .cbslocal import CBSLocalIE
 from .cbsinteractive import CBSInteractiveIE
 from .cbsnews import (
     CBSNewsIE,
@@ -142,6 +143,7 @@ from .cnn import (
     CNNBlogsIE,
     CNNArticleIE,
 )
+from .coub import CoubIE
 from .collegerama import CollegeRamaIE
 from .comedycentral import ComedyCentralIE, ComedyCentralShowsIE
 from .comcarcoff import ComCarCoffIE
@@ -230,6 +232,7 @@ from .everyonesmixtape import EveryonesMixtapeIE
 from .exfm import ExfmIE
 from .expotv import ExpoTVIE
 from .extremetube import ExtremeTubeIE
+from .eyedotv import EyedoTVIE
 from .facebook import FacebookIE
 from .faz import FazIE
 from .fc2 import FC2IE
@@ -242,6 +245,7 @@ from .fktv import FKTVIE
 from .flickr import FlickrIE
 from .folketinget import FolketingetIE
 from .footyroom import FootyRoomIE
+from .formula1 import Formula1IE
 from .fourtube import FourTubeIE
 from .fox import FOXIE
 from .foxgay import FoxgayIE
@@ -369,6 +373,7 @@ from .kuwo import (
 )
 from .la7 import LA7IE
 from .laola1tv import Laola1TvIE
+from .learnr import LearnrIE
 from .lecture2go import Lecture2GoIE
 from .lemonde import LemondeIE
 from .leeco import (
@@ -394,6 +399,7 @@ from .livestream import (
     LivestreamShortenerIE,
 )
 from .lnkgo import LnkGoIE
+from .localnews8 import LocalNews8IE
 from .lovehomeporn import LoveHomePornIE
 from .lrt import LRTIE
 from .lynda import (
@@ -613,6 +619,10 @@ from .qqmusic import (
     QQMusicPlaylistIE,
 )
 from .r7 import R7IE
+from .radiocanada import (
+    RadioCanadaIE,
+    RadioCanadaAudioVideoIE,
+)
 from .radiode import RadioDeIE
 from .radiojavan import RadioJavanIE
 from .radiobremen import RadioBremenIE
@@ -626,6 +636,7 @@ from .rds import RDSIE
 from .redtube import RedTubeIE
 from .regiotv import RegioTVIE
 from .restudy import RestudyIE
+from .reuters import ReutersIE
 from .reverbnation import ReverbNationIE
 from .revision3 import Revision3IE
 from .rice import RICEIE
@@ -667,6 +678,7 @@ from .screencastomatic import ScreencastOMaticIE
 from .screenjunkies import ScreenJunkiesIE
 from .screenwavemedia import ScreenwaveMediaIE, TeamFourIE
 from .senateisvp import SenateISVPIE
+from .sendtonews import SendtoNewsIE
 from .servingsys import ServingSysIE
 from .sexu import SexuIE
 from .shahid import ShahidIE
@@ -822,7 +834,10 @@ from .tvc import (
 )
 from .tvigle import TvigleIE
 from .tvland import TVLandIE
-from .tvp import TvpIE, TvpSeriesIE
+from .tvp import (
+    TVPIE,
+    TVPSeriesIE,
+)
 from .tvplay import TVPlayIE
 from .tweakers import TweakersIE
 from .twentyfourvideo import TwentyFourVideoIE
@@ -936,7 +951,10 @@ from .vube import VubeIE
 from .vuclip import VuClipIE
 from .vulture import VultureIE
 from .walla import WallaIE
-from .washingtonpost import WashingtonPostIE
+from .washingtonpost import (
+    WashingtonPostIE,
+    WashingtonPostArticleIE,
+)
 from .wat import WatIE
 from .watchindianporn import WatchIndianPornIE
 from .wdr import (

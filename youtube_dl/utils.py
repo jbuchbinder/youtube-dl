@@ -1035,6 +1035,7 @@ def unified_strdate(date_str, day_first=True):
         format_expressions.extend([
             '%d-%m-%Y',
             '%d.%m.%Y',
+            '%d.%m.%y',
             '%d/%m/%Y',
             '%d/%m/%y',
             '%d/%m/%Y %H:%M:%S',
@@ -1055,7 +1056,10 @@ def unified_strdate(date_str, day_first=True):
     if upload_date is None:
         timetuple = email.utils.parsedate_tz(date_str)
         if timetuple:
-            upload_date = datetime.datetime(*timetuple[:6]).strftime('%Y%m%d')
+            try:
+                upload_date = datetime.datetime(*timetuple[:6]).strftime('%Y%m%d')
+            except ValueError:
+                pass
     if upload_date is not None:
         return compat_str(upload_date)
 
@@ -1549,15 +1553,11 @@ def setproctitle(title):
 
 
 def remove_start(s, start):
-    if s.startswith(start):
-        return s[len(start):]
-    return s
+    return s[len(start):] if s is not None and s.startswith(start) else s
 
 
 def remove_end(s, end):
-    if s.endswith(end):
-        return s[:-len(end)]
-    return s
+    return s[:-len(end)] if s is not None and s.endswith(end) else s
 
 
 def remove_quotes(s):
@@ -1911,7 +1911,7 @@ def parse_age_limit(s):
 
 def strip_jsonp(code):
     return re.sub(
-        r'(?s)^[a-zA-Z0-9_.]+\s*\(\s*(.*)\);?\s*?(?://[^\n]*)*$', r'\1', code)
+        r'(?s)^[a-zA-Z0-9_.$]+\s*\(\s*(.*)\);?\s*?(?://[^\n]*)*$', r'\1', code)
 
 
 def js_to_json(code):
