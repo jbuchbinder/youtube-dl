@@ -20,7 +20,10 @@ from .adobetv import (
     AdobeTVVideoIE,
 )
 from .adultswim import AdultSwimIE
-from .aenetworks import AENetworksIE
+from .aenetworks import (
+    AENetworksIE,
+    HistoryTopicIE,
+)
 from .afreecatv import AfreecaTVIE
 from .aftonbladet import AftonbladetIE
 from .airmozilla import AirMozillaIE
@@ -422,6 +425,7 @@ from .makerschannel import MakersChannelIE
 from .makertv import MakerTVIE
 from .matchtv import MatchTVIE
 from .mdr import MDRIE
+from .meta import METAIE
 from .metacafe import MetacafeIE
 from .metacritic import MetacriticIE
 from .mgoon import MgoonIE
@@ -706,10 +710,12 @@ from .shahid import ShahidIE
 from .shared import SharedIE
 from .sharesix import ShareSixIE
 from .sina import SinaIE
+from .sixplay import SixPlayIE
 from .skynewsarabia import (
     SkyNewsArabiaIE,
     SkyNewsArabiaArticleIE,
 )
+from .skysports import SkySportsIE
 from .slideshare import SlideshareIE
 from .slutload import SlutloadIE
 from .smotri import (
@@ -891,6 +897,7 @@ from .udn import UDNEmbedIE
 from .digiteka import DigitekaIE
 from .unistra import UnistraIE
 from .urort import UrortIE
+from .urplay import URPlayIE
 from .usatoday import USATodayIE
 from .ustream import UstreamIE, UstreamChannelIE
 from .ustudio import (
