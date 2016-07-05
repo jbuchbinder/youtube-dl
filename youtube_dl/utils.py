@@ -1444,6 +1444,8 @@ def shell_quote(args):
 def smuggle_url(url, data):
     """ Pass additional data in a URL for internal use. """
 
+    url, idata = unsmuggle_url(url, {})
+    data.update(idata)
     sdata = compat_urllib_parse_urlencode(
         {'__youtubedl_smuggle': json.dumps(data)})
     return url + '#' + sdata
@@ -1623,6 +1625,11 @@ def url_basename(url):
 class HEADRequest(compat_urllib_request.Request):
     def get_method(self):
         return 'HEAD'
+
+
+class PUTRequest(compat_urllib_request.Request):
+    def get_method(self):
+        return 'PUT'
 
 
 def int_or_none(v, scale=1, default=None, get_attr=None, invscale=1):
@@ -1920,7 +1927,13 @@ def update_Request(req, url=None, data=None, headers={}, query={}):
     req_headers.update(headers)
     req_data = data or req.data
     req_url = update_url_query(url or req.get_full_url(), query)
-    req_type = HEADRequest if req.get_method() == 'HEAD' else compat_urllib_request.Request
+    req_get_method = req.get_method()
+    if req_get_method == 'HEAD':
+        req_type = HEADRequest
+    elif req_get_method == 'PUT':
+        req_type = PUTRequest
+    else:
+        req_type = compat_urllib_request.Request
     new_req = req_type(
         req_url, data=req_data, headers=req_headers,
         origin_req_host=req.origin_req_host, unverifiable=req.unverifiable)

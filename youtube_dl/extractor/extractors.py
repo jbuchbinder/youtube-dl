@@ -171,6 +171,8 @@ from .crunchyroll import (
 )
 from .cspan import CSpanIE
 from .ctsnews import CtsNewsIE
+from .ctv import CTVIE
+from .ctvnews import CTVNewsIE
 from .cultureunplugged import CultureUnpluggedIE
 from .cwtv import CWTVIE
 from .dailymail import DailyMailIE
@@ -279,6 +281,7 @@ from .freespeech import FreespeechIE
 from .freevideo import FreeVideoIE
 from .funimation import FunimationIE
 from .funnyordie import FunnyOrDieIE
+from .fusion import FusionIE
 from .gameinformer import GameInformerIE
 from .gamekings import GamekingsIE
 from .gameone import (
@@ -323,6 +326,10 @@ from .hotnewhiphop import HotNewHipHopIE
 from .hotstar import HotStarIE
 from .howcast import HowcastIE
 from .howstuffworks import HowStuffWorksIE
+from .hrti import (
+    HRTiIE,
+    HRTiPlaylistIE,
+)
 from .huffpost import HuffPostIE
 from .hypem import HypemIE
 from .iconosquare import IconosquareIE
@@ -526,6 +533,7 @@ from .nick import (
     NickDeIE,
 )
 from .niconico import NiconicoIE, NiconicoPlaylistIE
+from .ninecninemedia import NineCNineMediaIE
 from .ninegag import NineGagIE
 from .noco import NocoIE
 from .normalboots import NormalbootsIE

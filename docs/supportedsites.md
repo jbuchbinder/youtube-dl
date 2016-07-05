@@ -152,6 +152,8 @@
  - **CSNNE**
  - **CSpan**: C-SPAN
  - **CtsNews**: 華視新聞
+ - **CTV**
+ - **CTVNews**
  - **culturebox.francetvinfo.fr**
  - **CultureUnplugged**
  - **CWTV**
@@ -240,6 +242,7 @@
  - **FreeVideo**
  - **Funimation**
  - **FunnyOrDie**
+ - **Fusion**
  - **GameInformer**
  - **Gamekings**
  - **GameOne**
@@ -272,6 +275,7 @@
  - **Helsinki**: helsinki.fi
  - **HentaiStigma**
  - **HistoricFilms**
+ - **history:topic**: History.com Topic
  - **hitbox**
  - **hitbox:live**
  - **HornBunny**
@@ -279,6 +283,8 @@
  - **HotStar**
  - **Howcast**
  - **HowStuffWorks**
+ - **HRTi**
+ - **HRTiPlaylist**
  - **HuffPost**: Huffington Post
  - **Hypem**
  - **Iconosquare**
@@ -325,7 +331,7 @@
  - **kuwo:mv**: 酷我音乐 - MV
  - **kuwo:singer**: 酷我音乐 - 歌手
  - **kuwo:song**: 酷我音乐
- - **la7.tv**
+ - **la7.it**
  - **Laola1Tv**
  - **Le**: 乐视网
  - **Learnr**
@@ -358,6 +364,7 @@
  - **MatchTV**
  - **MDR**: MDR.DE and KiKA
  - **media.ccc.de**
+ - **META**
  - **metacafe**
  - **Metacritic**
  - **Mgoon**
@@ -438,6 +445,7 @@
  - **nick.de**
  - **niconico**: ニコニコ動画
  - **NiconicoPlaylist**
+ - **NineCNineMedia**
  - **njoy**: N-JOY
  - **njoy:embed**
  - **Noco**
@@ -503,7 +511,7 @@
  - **podomatic**
  - **PolskieRadio**
  - **PornHd**
- - **PornHub**
+ - **PornHub**: PornHub and Thumbzilla
  - **PornHubPlaylist**
  - **PornHubUserVideos**
  - **Pornotube**
@@ -587,8 +595,10 @@
  - **Shared**: shared.sx and vivo.sx
  - **ShareSix**
  - **Sina**
+ - **SixPlay**
  - **skynewsarabia:article**
  - **skynewsarabia:video**
+ - **SkySports**
  - **Slideshare**
  - **Slutload**
  - **smotri**: Smotri.com
@@ -721,6 +731,7 @@
  - **UDNEmbed**: 聯合影音
  - **Unistra**
  - **Urort**: NRK P3 Urørt
+ - **URPlay**
  - **USAToday**
  - **ustream**
  - **ustream:channel**
