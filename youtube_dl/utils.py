@@ -310,8 +310,16 @@ def get_element_by_id(id, html):
     return get_element_by_attribute('id', id, html)
 
 
-def get_element_by_attribute(attribute, value, html):
+def get_element_by_class(class_name, html):
+    return get_element_by_attribute(
+        'class', r'[^\'"]*\b%s\b[^\'"]*' % re.escape(class_name),
+        html, escape_value=False)
+
+
+def get_element_by_attribute(attribute, value, html, escape_value=True):
     """Return the content of the tag with the specified attribute in the passed HTML document"""
+
+    value = re.escape(value) if escape_value else value
 
     m = re.search(r'''(?xs)
         <([a-zA-Z0-9:._-]+)
@@ -321,7 +329,7 @@ def get_element_by_attribute(attribute, value, html):
         \s*>
         (?P<content>.*?)
         </\1>
-    ''' % (re.escape(attribute), re.escape(value)), html)
+    ''' % (re.escape(attribute), value), html)
 
     if not m:
         return None
@@ -2097,6 +2105,7 @@ def mimetype2ext(mt):
         return ext
 
     _, _, res = mt.rpartition('/')
+    res = res.lower()
 
     return {
         '3gpp': '3gp',
@@ -2108,7 +2117,51 @@ def mimetype2ext(mt):
         'x-flv': 'flv',
         'x-mp4-fragmented': 'mp4',
         'x-ms-wmv': 'wmv',
+        'mpegurl': 'm3u8',
+        'x-mpegurl': 'm3u8',
+        'vnd.apple.mpegurl': 'm3u8',
+        'dash+xml': 'mpd',
+        'f4m': 'f4m',
+        'f4m+xml': 'f4m',
+        'hds+xml': 'f4m',
+        'vnd.ms-sstr+xml': 'ism',
     }.get(res, res)
+
+
+def parse_codecs(codecs_str):
+    # http://tools.ietf.org/html/rfc6381
+    if not codecs_str:
+        return {}
+    splited_codecs = list(filter(None, map(
+        lambda str: str.strip(), codecs_str.strip().strip(',').split(','))))
+    vcodec, acodec = None, None
+    for full_codec in splited_codecs:
+        codec = full_codec.split('.')[0]
+        if codec in ('avc1', 'avc2', 'avc3', 'avc4', 'vp9', 'vp8', 'hev1', 'hev2', 'h263', 'h264', 'mp4v'):
+            if not vcodec:
+                vcodec = full_codec
+        elif codec in ('mp4a', 'opus', 'vorbis', 'mp3', 'aac'):
+            if not acodec:
+                acodec = full_codec
+        else:
+            write_string('WARNING: Unknown codec %s' % full_codec, sys.stderr)
+    if not vcodec and not acodec:
+        if len(splited_codecs) == 2:
+            return {
+                'vcodec': vcodec,
+                'acodec': acodec,
+            }
+        elif len(splited_codecs) == 1:
+            return {
+                'vcodec': 'none',
+                'acodec': vcodec,
+            }
+    else:
+        return {
+            'vcodec': vcodec or 'none',
+            'acodec': acodec or 'none',
+        }
+    return {}
 
 
 def urlhandle_detect_ext(url_handle):
