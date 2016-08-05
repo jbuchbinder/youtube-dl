@@ -159,8 +159,9 @@ from .coub import CoubIE
 from .collegerama import CollegeRamaIE
 from .comedycentral import (
     ComedyCentralIE,
-    ComedyCentralShowsIE,
+    ComedyCentralShortnameIE,
     ComedyCentralTVIE,
+    ToshIE,
 )
 from .comcarcoff import ComCarCoffIE
 from .commonmistakes import CommonMistakesIE, UnicodeBOMIE
@@ -289,7 +290,6 @@ from .funimation import FunimationIE
 from .funnyordie import FunnyOrDieIE
 from .fusion import FusionIE
 from .gameinformer import GameInformerIE
-from .gamekings import GamekingsIE
 from .gameone import (
     GameOneIE,
     GameOnePlaylistIE,
@@ -480,7 +480,6 @@ from .msn import MSNIE
 from .mtv import (
     MTVIE,
     MTVServicesEmbeddedIE,
-    MTVIggyIE,
     MTVDEIE,
 )
 from .muenchentv import MuenchenTVIE
@@ -492,8 +491,9 @@ from .myvi import MyviIE
 from .myvideo import MyVideoIE
 from .myvidster import MyVidsterIE
 from .nationalgeographic import (
+    NationalGeographicVideoIE,
     NationalGeographicIE,
-    NationalGeographicChannelIE,
+    NationalGeographicEpisodeGuideIE,
 )
 from .naver import NaverIE
 from .nba import NBAIE
@@ -530,7 +530,6 @@ from .nextmedia import (
     NextMediaActionNewsIE,
     AppleDailyIE,
 )
-from .nextmovie import NextMovieIE
 from .nfb import NFBIE
 from .nfl import NFLIE
 from .nhl import (
@@ -1006,6 +1005,7 @@ from .vk import (
 )
 from .vlive import VLiveIE
 from .vodlocker import VodlockerIE
+from .vodplatform import VODPlatformIE
 from .voicerepublic import VoiceRepublicIE
 from .voxmedia import VoxMediaIE
 from .vporn import VpornIE

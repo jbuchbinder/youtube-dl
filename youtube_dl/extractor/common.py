@@ -727,9 +727,14 @@ class InfoExtractor(object):
                     [^>]+?content=(["\'])(?P<content>.*?)\2''' % re.escape(prop)
 
     def _og_search_property(self, prop, html, name=None, **kargs):
+        if not isinstance(prop, (list, tuple)):
+            prop = [prop]
         if name is None:
-            name = 'OpenGraph %s' % prop
-        escaped = self._search_regex(self._og_regexes(prop), html, name, flags=re.DOTALL, **kargs)
+            name = 'OpenGraph %s' % prop[0]
+        og_regexes = []
+        for p in prop:
+            og_regexes.extend(self._og_regexes(p))
+        escaped = self._search_regex(og_regexes, html, name, flags=re.DOTALL, **kargs)
         if escaped is None:
             return None
         return unescapeHTML(escaped)
@@ -911,7 +916,8 @@ class InfoExtractor(object):
                 if f.get('ext') in ['f4f', 'f4m']:  # Not yet supported
                     preference -= 0.5
 
-            proto_preference = 0 if determine_protocol(f) in ['http', 'https'] else -0.1
+            protocol = f.get('protocol') or determine_protocol(f)
+            proto_preference = 0 if protocol in ['http', 'https'] else (-0.5 if protocol == 'rtsp' else -0.1)
 
             if f.get('vcodec') == 'none':  # audio only
                 preference -= 50
@@ -1786,7 +1792,7 @@ class InfoExtractor(object):
 
         any_restricted = False
         for tc in self.get_testcases(include_onlymatching=False):
-            if 'playlist' in tc:
+            if tc.get('playlist', []):
                 tc = tc['playlist'][0]
             is_restricted = age_restricted(
                 tc.get('info_dict', {}).get('age_limit'), age_limit)
