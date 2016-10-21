@@ -1,3 +1,39 @@
+version 2016.10.21.1
+
+Extractors
++ [pluralsight] Process all clip URLs (#10984)
+
+
+version 2016.10.21
+
+Core
+- Disable thumbnails embedding in mkv
++ Add support for Comcast multiple-system operator (#10819)
+
+Extractors
+* [pluralsight] Adapt to new API (#10972)
+* [openload] Fix extraction (#10408, #10971)
++ [natgeo] Extract m3u8 formats (#10959)
+
+
+version 2016.10.19
+
+Core
++ [utils] Expose PACKED_CODES_RE
++ [extractor/common] Extract non smil wowza mpd manifests
++ [extractor/common] Detect f4m audio-only formats
+
+Extractors
+* [vidzi] Fix extraction (#10908, #10952)
+* [urplay] Fix subtitles extraction
++ [urplay] Add support for urskola.se (#10915)
++ [orf] Add subtitles support (#10939)
+* [youtube] Fix --no-playlist behavior for youtu.be/id URLs (#10896)
+* [nrk] Relax URL regular expression (#10928)
++ [nytimes] Add support for podcasts (#10926)
+* [pluralsight] Relax URL regular expression (#10941)
+
+
 version 2016.10.16
 
 Core
