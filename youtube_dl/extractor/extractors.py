@@ -408,6 +408,10 @@ from .ivi import (
 from .ivideon import IvideonIE
 from .iwara import IwaraIE
 from .izlesene import IzleseneIE
+from .jamendo import (
+    JamendoIE,
+    JamendoAlbumIE,
+)
 from .jeuxvideo import JeuxVideoIE
 from .jove import JoveIE
 from .jwplatform import JWPlatformIE
@@ -667,6 +671,7 @@ from .orf import (
     ORFFM4IE,
     ORFIPTVIE,
 )
+from .pandatv import PandaTVIE
 from .pandoratv import PandoraTVIE
 from .parliamentliveuk import ParliamentLiveUKIE
 from .patreon import PatreonIE
@@ -796,7 +801,10 @@ from .sendtonews import SendtoNewsIE
 from .servingsys import ServingSysIE
 from .sexu import SexuIE
 from .shahid import ShahidIE
-from .shared import SharedIE
+from .shared import (
+    SharedIE,
+    VivoIE,
+)
 from .sharesix import ShareSixIE
 from .sina import SinaIE
 from .sixplay import SixPlayIE
